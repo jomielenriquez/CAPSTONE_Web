@@ -1,45 +1,68 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
     <title>@ViewBag.Title - CAPSTONE</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @{
+        if (ViewBag.Title == "Login") { ViewBag.Prev = "Index"; }
+        else if (ViewBag.Title == "Login_Page") { ViewBag.Prev = "Login"; }
+        else if (ViewBag.Title == "Register") { ViewBag.Prev = "Index"; }
+        else if (ViewBag.Title == "Register_Page") { ViewBag.Prev = "Register"; }
+    }
+    <!-- Favicons -->
+    @*<link href="img/favicon.png" rel="icon">
+        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">*@
+
+    @Styles.Render("~/Content/Bootstrap")
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("CAPSTONE", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                @*<ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                </ul>*@
-                <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Back", "Index", "Login", new { area = "" }, new { @class = "navbar-brand" })</li>
+    <section id="container">
+
+        <header class="header black-bg">
+            <a href="index.html" class="logo"><b>CAP<span>STONE</span></b></a>
+            <div class="top-menu">
+                <ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="@Url.Action(ViewBag.Prev,"Login")">Back</a></li>
                 </ul>
-
             </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - CAPSTONE</p>
-        </footer>
-    </div>
+        </header>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        <section id="main-content" style="margin:0 150px 0 150px; text-align:center;">
+            <section class="wrapper">
+                <!-- page start-->
+                <div class="row mt">
+                    @RenderBody()
+                </div>
+            </section>
+            <!-- /wrapper -->
+        </section>
+        <!-- /MAIN CONTENT -->
+        <!--main content end-->
+        <!--footer start-->
+        <footer class="site-footer">
+            <div class="text-center">
+                <p>
+                    &copy; Copyrights <strong>CAPSTONE</strong>. All Rights Reserved
+                </p>
+                <div class="credits">
+                    Created by CAPSTONE
+                </div>
+                <a href="inbox.html#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+            </div>
+        </footer>
+        <!--footer end-->
+    </section>
+    @Scripts.Render("~/Script/Bootstrap")
 </body>
+
 </html>
+
+

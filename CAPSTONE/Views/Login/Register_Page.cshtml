@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Register_Page";
+    Layout = "~/Views/Shared/_LoginHeader.cshtml";
+}
+
+
+<div class="div_center">
+    <form class="form-login style-form">
+        <h2 class="form-login-heading">@ViewBag.id Registration Form</h2>
+        <div class="login-wrap">
+            <label for="firstname" class="control-label col-lg-2">Firstname</label>
+            <input class=" form-control" id="firstname" name="firstname" type="text">
+            <br />
+            <label for="middlename" class="control-label col-lg-2">Middle Name</label>
+            <input class=" form-control" id="middlename" name="middlename" type="text">
+            <br />
+            <label for="lastname" class="control-label col-lg-2">Last Name</label>
+            <input class=" form-control" id="lastname" name="lastname" type="text">
+            <br />
+            <label for="username" class="control-label col-lg-2">Username</label>
+            <input class=" form-control" id="username" name="username" type="text">
+            <br />
+            <label for="password" class="control-label col-lg-2">Password</label>
+            <input class=" form-control" id="password" name="password" type="password">
+            <br />
+
+            <button class="btn btn-theme btn-block" href="index.html" type="submit"><i class="fa fa-book"></i> Register</button>
+        </div>
+    </form>
+</div>
+

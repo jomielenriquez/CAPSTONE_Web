@@ -21,8 +21,16 @@ namespace CAPSTONE.Controllers
         {
             return View();
         }
-        public ActionResult Login_Page()
+        public ActionResult Login_Page(string id)
         {
+            if (id == "Traffic") ViewBag.id = "Traffic Enforcer";
+            else ViewBag.id = id;
+            return View();
+        }
+        public ActionResult Register_Page(string id)
+        {
+            if (id == "Traffic") ViewBag.id = "Traffic Enforcer";
+            else ViewBag.id = id;
             return View();
         }
     }

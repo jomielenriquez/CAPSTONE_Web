@@ -28,7 +28,8 @@ namespace CAPSTONE
                       "~/Scripts/bootstrap/css/bootstrap.min.css",
                       "~/Scripts/font-awesome/css/font-awesome.css",
                       "~/Content/style.css",
-                      "~/Content/style-responsive.css"
+                      "~/Content/style-responsive.css",
+                      "~/Content/jquery.gritter.css"
             ));
             bundles.Add(new ScriptBundle("~/Script/Bootstrap").Include(
                       "~/Scripts/jquery/jquery.min.js",
@@ -36,7 +37,8 @@ namespace CAPSTONE
                       "~/Scripts/jquery.dcjqaccordion.2.7.js",
                       "~/Scripts/jquery.scrollTo.min.js",
                       "~/Scripts/jquery.nicescroll.js",
-                      "~/Scripts/common-scripts.js"
+                      "~/Scripts/common-scripts.js",
+                      "~/Scripts/jquery.gritter.js"
             ));
         }
     }
