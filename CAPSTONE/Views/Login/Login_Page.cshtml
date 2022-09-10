@@ -5,28 +5,89 @@
 }
 
 <div class="div_center">
-    <h2>Login</h2>
-    <form class="form-horizontal">
-        <fieldset>
-            <legend></legend>
-            <div class="form-group">
-                <label for="inputEmail" class="col-lg-2 control-label">Username</label>
-                <div class="col-lg-10">
-                    <input type="text" class="form-control" id="inputusername" placeholder="Enter username">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputEmail" class="col-lg-2 control-label">Password</label>
-                <div class="col-lg-10">
-                    <input type="text" class="form-control" id="inputpassword" placeholder="Enter password">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-2">
-                    <button type="button" class="btn btn-success">Confirm</button>
-                </div>
-            </div>
-        </fieldset>
+    <form class="form-login">
+        <h2 class="form-login-heading">@ViewBag.id Login Form</h2>
+        <div class="login-wrap">
+            <input type="text" class="form-control" placeholder="User ID" autofocus="" id="inpt_username">
+            <br>
+            <input type="password" class="form-control" placeholder="Password" id="inpt_pass">
+            <label class="checkbox">
+                <input type="checkbox" value="Show" onclick="showPass()" id="inpt_showpass"> Show password
+            </label>
+            <button class="btn btn-theme btn-block" href="index.html" type="button" onclick="btn_login()"><i class="fa fa-lock"></i> SIGN IN</button>
+        </div>
     </form>
 </div>
+<script type="text/javascript">
+    function showPass() {
+        if ($("#inpt_showpass").is(':checked')) {
+            $('#inpt_pass').attr('type', 'text');
+        }
+        else {
+            $('#inpt_pass').attr('type', 'password');
+        }
+    }
+    function btn_login() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/LoginUser",
+            dataType: "text",
+            data: JSON.stringify({
+                "username": $("#inpt_username").val(),
+                "password": $("#inpt_pass").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data == "Error") {
+                    $("#inputUsername").val("");
+                    $("#inputPassword").val("");
+                    gritter("Error", "Invalid username or password");
+                    return 0;
+                }
+                window.location.replace("/Systems/Index?id=" + data);
+                //window.location.replace("/Home/Index");
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                alert("Error")
+            }
+        });
+    }
 
+    $.extend($.gritter.options, {
+        class_name: 'gritter-dark', // for light notifications (can be added directly to $.gritter.add too)
+        position: 'bottom-left', // possibilities: bottom-left, bottom-right, top-left, top-right
+        fade_in_speed: 100, // how fast notifications fade in (string or int)
+        fade_out_speed: 100, // how fast the notices fade out
+        time: 3000 // hang on the screen for...
+    });
+    function gritter(title, Message) {
+
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: title,
+            // (string | mandatory) the text inside the notification
+            text: Message
+        });
+    }
+    function sticky_gritter(title, text, isError, isSticky) {
+        var location = "";
+        if (isError == false) location = '../images/confirm.png'
+        else location = '../images/error.png'
+        var unique_id = $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: title,
+            // (string | mandatory) the text inside the notification
+            text: text,
+            // (string | optional) the image to display on the left
+            image: location,
+            // (bool | optional) if you want it to fade out on its own or just sit there || true or false
+            sticky: isSticky,
+            // (int | optional) the time you want it to be alive for before fading out
+            time: '',
+            // (string | optional) the class name you want to apply to that specific message
+            class_name: 'my-sticky-class'
+        });
+
+    }
+</script>

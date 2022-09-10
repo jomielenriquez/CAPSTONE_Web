@@ -5,22 +5,22 @@
 }
 
 <div class="div_center">
-    <h2>Login</h2>
+    <h1>Login</h1>
     <form class="form-horizontal">
         <fieldset>
             <legend></legend>
             <div class="form-group">
-                <button type="button" id="asAdmin" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Admin</button>
+                <button type="button" id="Admin" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Admin</button>
             </div>
             <div class="form-group">
-                <button type="button" id="asClerk" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Clerk</button>
+                <button type="button" id="Clerk" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Clerk</button>
             </div>
             <div class="form-group">
-                <button type="button" id="asEnforcer" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Traffic Enforcer</button>
+                <button type="button" id="Traffic" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Login as Traffic Enforcer</button>
             </div>
             <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-2">
-                    <button type="button" class="btn btn-success">Confirm</button>
+                <div class="col-lg-10 col-lg-offset-1">
+                    <button type="button" class="btn btn-success" onclick="Login_btn()">Confirm</button>
                 </div>
             </div>
         </fieldset>
@@ -35,6 +35,12 @@
         $("button.login").addClass("btn_max_width");
         $("#" + btn.id).removeClass("btn-default");
         $("#" + btn.id).addClass("btn-primary");
+    }
+    function Login_btn() {
+        var Logininas = $("button.btn-primary").attr("id");
+        var url = '@Url.Action("Login_Page", "Login")?id=' + Logininas;
+        console.log(Logininas);
+        window.location.href = url;
     }
 </script>
 
