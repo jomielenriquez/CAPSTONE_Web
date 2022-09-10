@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LoginHeader.cshtml";
+}
+
+<div class="div_center">
+    <h2>Register</h2>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend></legend>
+            <div class="form-group">
+                <button type="button" id="asClerk" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Register as Clerk</button>
+            </div>
+            <div class="form-group">
+                <button type="button" id="asEnforcer" class="login btn btn-default btn_max_width" onclick="btnLogin(this)">Register as Traffic Enforcer</button>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                    <button type="button" class="btn btn-success">Confirm</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    function btnLogin(btn) {
+        $("button.login").removeClass("btn-primary");
+        $("button.login").addClass("login");
+        $("button.login").addClass("btn");
+        $("button.login").addClass("btn-default");
+        $("button.login").addClass("btn_max_width");
+        $("#" + btn.id).removeClass("btn-default");
+        $("#" + btn.id).addClass("btn-primary");
+    }
+</script>
