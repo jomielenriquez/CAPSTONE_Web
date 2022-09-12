@@ -29,6 +29,7 @@ namespace CAPSTONE
                       "~/Scripts/font-awesome/css/font-awesome.css",
                       "~/Content/style.css",
                       "~/Content/style-responsive.css",
+                      "~/Content/table-responsive.css",
                       "~/Content/jquery.gritter.css"
             ));
             bundles.Add(new ScriptBundle("~/Script/Bootstrap").Include(
@@ -38,7 +39,8 @@ namespace CAPSTONE
                       "~/Scripts/jquery.scrollTo.min.js",
                       "~/Scripts/jquery.nicescroll.js",
                       "~/Scripts/common-scripts.js",
-                      "~/Scripts/jquery.gritter.js"
+                      "~/Scripts/jquery.gritter.js",
+                      "~/Scripts/grittercustom.js"
             ));
         }
     }

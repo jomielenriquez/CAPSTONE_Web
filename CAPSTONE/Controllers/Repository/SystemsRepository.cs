@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace CAPSTONE.Controllers.Repository
 {
@@ -49,19 +50,27 @@ namespace CAPSTONE.Controllers.Repository
             var user = new CurrentUser();
 
             DataTable dt = new DataTable();
-            using (SqlConnection con = new SqlConnection(constr))
+            try
             {
-                SqlCommand cmd = new SqlCommand("prop_get_current_user", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                con.Open();
-                cmd.Parameters.AddWithValue("@acntuid", acntuid);
-                da.Fill(dt);
-                con.Close();
-            }
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("prop_get_current_user", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@acntuid", acntuid);
+                    da.Fill(dt);
+                    con.Close();
+                }
 
-            user.fullname = Convert.ToString(dt.Rows[0]["fullname"]);
-            user.acnttype = Convert.ToString(dt.Rows[0]["acnttype"]);
+                user.fullname = Convert.ToString(dt.Rows[0]["fullname"]);
+                user.acnttype = Convert.ToString(dt.Rows[0]["acnttype"]);
+                user.uid= Convert.ToString(dt.Rows[0]["uid"]);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             return user;
         }
@@ -82,6 +91,20 @@ namespace CAPSTONE.Controllers.Repository
             if (dt.Rows.Count == 0) return "Error";
 
             return Convert.ToString(dt.Rows[0]["uid"]);
+        }
+        public string getreport()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("prop_get_report", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
         }
     }
 }
