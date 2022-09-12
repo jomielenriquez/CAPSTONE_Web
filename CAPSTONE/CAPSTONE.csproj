@@ -289,6 +289,7 @@
     <Content Include="Scripts\google-maps\data\points.js" />
     <Content Include="Scripts\google-maps\maplace.js" />
     <Content Include="Scripts\gritter-conf.js" />
+    <Content Include="Scripts\grittercustom.js" />
     <Content Include="Scripts\gritter\css\jquery.gritter.css" />
     <Content Include="Scripts\gritter\css\jquery.gritter0.css" />
     <Content Include="Scripts\gritter\images\gritter-light.png" />
@@ -368,6 +369,7 @@
     <Content Include="Scripts\font-awesome\fonts\FontAwesome.otf" />
     <Content Include="Views\Login\Register_Page.cshtml" />
     <Content Include="Views\Systems\Index.cshtml" />
+    <Content Include="Views\Systems\Reports.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

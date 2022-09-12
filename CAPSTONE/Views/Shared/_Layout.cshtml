@@ -40,7 +40,7 @@
                     @foreach (var menu in Model.menulist)
                     {
                         <li class="mt">
-                            <a href="@Url.Action(menu.action,menu.controller)" id="@menu.tagid">
+                            <a href="@Url.Action(menu.action,menu.controller, new {id=Model.currentuser.uid })" id="@menu.tagid">
                                 <i class="fa @menu.icon"></i>
                                 <span>@menu.Text</span>
                             </a>
@@ -58,9 +58,9 @@
         <section id="main-content">
             <section class="wrapper">
                 <!-- page start-->
+                        @RenderBody()
                 <div class="row">
                     <div style="padding-left:30px; padding-right:30px;">
-                        @RenderBody()
                     </div>
                 </div>
             </section>

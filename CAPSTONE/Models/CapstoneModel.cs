@@ -17,6 +17,7 @@ namespace CAPSTONE.Models
     {
         public string fullname { get; set; }
         public string acnttype { get; set; }
+        public string uid { get; set; }
     }
     public class UserControl
     {
