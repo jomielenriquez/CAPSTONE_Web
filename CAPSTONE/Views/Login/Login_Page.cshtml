@@ -52,6 +52,7 @@
             }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                data = someerm(data);
                 if (data == "Error") {
                     $("#inputUsername").val("");
                     $("#inputPassword").val("");
@@ -60,7 +61,6 @@
                     return 0;
                 }
                 window.location.replace("/Systems/Index?id=" + data);
-                //window.location.replace("/Home/Index");
             },
             error: function (textStatus, errorThrown) {
                 // Success = false;//doesn't go here

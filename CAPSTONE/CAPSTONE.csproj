@@ -370,6 +370,8 @@
     <Content Include="Views\Login\Register_Page.cshtml" />
     <Content Include="Views\Systems\Index.cshtml" />
     <Content Include="Views\Systems\Reports.cshtml" />
+    <Content Include="Views\Systems\About.cshtml" />
+    <Content Include="Views\Systems\Dashboard.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

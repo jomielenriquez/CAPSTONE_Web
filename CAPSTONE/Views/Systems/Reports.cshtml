@@ -24,13 +24,13 @@
                     </thead>
                     <tbody>
                         @*<tr>
-                            <td data-title="Name">Jomiel Enriquez</td>
-                            <td data-title="Address">Reaville Brgy. 7 Tanauan City</td>
-                            <td data-title="License">N03-12-123456</td>
-                            <td data-title="Vehicle">SUV</td>
-                            <td data-title="Place">Crossing</td>
-                            <td data-title="Violation">Handsomeness</td>
-                        </tr>*@
+                                <td data-title="Name">Jomiel Enriquez</td>
+                                <td data-title="Address">Reaville Brgy. 7 Tanauan City</td>
+                                <td data-title="License">N03-12-123456</td>
+                                <td data-title="Vehicle">SUV</td>
+                                <td data-title="Place">Crossing</td>
+                                <td data-title="Violation">Handsomeness</td>
+                            </tr>*@
                     </tbody>
                 </table>
             </section>
@@ -60,14 +60,15 @@
             dataType: "text",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                data = someerm(data);
                 //gritter("Success", "see console log.");
                 var Json_Data = JSON.parse(data);
                 for (var i = 0; i < Json_Data.length; i++) {
-                    var Row = `<tr id='` + Json_Data[i]["tid"] +`'><td data-title="Name">` + Json_Data[i]["fname"] +`</td>
-                            <td data-title="Address">`+ Json_Data[i]["address"]+`</td>
-                            <td data-title="License">`+ Json_Data[i]["licenseno"]+`</td>
-                            <td data-title="Vehicle">`+ Json_Data[i]["vehicletype"]+`</td>
-                            <td data-title="Place">`+ Json_Data[i]["placeofviolation"]+`</td>
+                    var Row = `<tr id='` + Json_Data[i]["tid"] + `'><td data-title="Name">` + Json_Data[i]["fname"] + `</td>
+                            <td data-title="Address">`+ Json_Data[i]["address"] + `</td>
+                            <td data-title="License">`+ Json_Data[i]["licenseno"] + `</td>
+                            <td data-title="Vehicle">`+ Json_Data[i]["vehicletype"] + `</td>
+                            <td data-title="Place">`+ Json_Data[i]["placeofviolation"] + `</td>
                             <td data-title="Violation">`+ Json_Data[i]["vdesc"] + `</td>
                             <td data-title="Action"><button type="button" class="btn btn-round btn-info btn-sm">Edit</button></td></tr>`;
                     $('#tbl_apprehention tbody').append(Row);

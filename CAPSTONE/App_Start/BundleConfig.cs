@@ -42,6 +42,9 @@ namespace CAPSTONE
                       "~/Scripts/jquery.gritter.js",
                       "~/Scripts/grittercustom.js"
             ));
+            bundles.Add(new ScriptBundle("~/Script/jquery").Include(
+                      "~/Scripts/jquery/jquery.min.js"
+            ));
         }
     }
 }
