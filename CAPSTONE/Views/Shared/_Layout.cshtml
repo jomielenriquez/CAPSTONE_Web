@@ -14,7 +14,6 @@
         <link href="img/apple-touch-icon.png" rel="apple-touch-icon">*@
 
     @Styles.Render("~/Content/Bootstrap")
-    @Scripts.Render("~/Script/Bootstrap")
 </head>
 
 <body>
@@ -23,8 +22,8 @@
             <div class="sidebar-toggle-box">
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
             </div>
-            <a href="index.html" class="logo"><b>CAP<span>STONE</span></b></a>
-           
+            <a href="" class="logo"><b>CAP<span>STONE</span></b></a>
+
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
                     <li><a class="logout" href="@Url.Action("Index","Login")">Logout</a></li>
@@ -58,7 +57,8 @@
         <section id="main-content">
             <section class="wrapper">
                 <!-- page start-->
-                        @RenderBody()
+                @Scripts.Render("~/Script/jquery")
+                @RenderBody()
                 <div class="row">
                     <div style="padding-left:30px; padding-right:30px;">
                     </div>
@@ -84,7 +84,8 @@
         </footer>
         <!--footer end-->
     </section>
-    
+    @Scripts.Render("~/Script/Bootstrap")
+
 </body>
 
 </html>
