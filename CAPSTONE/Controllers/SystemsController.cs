@@ -73,10 +73,10 @@ namespace CAPSTONE.Controllers
             return View(userControl);
         }
 
-        public string LoginUser(string username, string password)
+        public string LoginUser(string username, string password, string acnttype)
         {
             SystemsRepository systemsRepository = new SystemsRepository();
-            return systemsRepository.LoginUser(username, password);
+            return systemsRepository.LoginUser(username, password, acnttype);
         }
         public string getreport()
         {

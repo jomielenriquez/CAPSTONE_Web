@@ -74,7 +74,7 @@ namespace CAPSTONE.Controllers.Repository
 
             return user;
         }
-        public string LoginUser(string username, string password)
+        public string LoginUser(string username, string password, string acnttype)
         {
             DataTable dt = new DataTable();
             using (SqlConnection con = new SqlConnection(constr))
@@ -85,6 +85,7 @@ namespace CAPSTONE.Controllers.Repository
                 con.Open();
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@acnttype", acnttype);
                 da.Fill(dt);
                 con.Close();
             }
