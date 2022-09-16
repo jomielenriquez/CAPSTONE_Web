@@ -83,5 +83,15 @@ namespace CAPSTONE.Controllers
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.getreport();
         }
+        public string get_total()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.get_total();
+        }
+        public string get_total_today()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.get_total_today();
+        }
     }
 }

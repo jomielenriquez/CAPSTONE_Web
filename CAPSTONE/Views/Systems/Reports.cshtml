@@ -35,8 +35,26 @@
                 </table>
             </section>
             <div style="padding-right:0px; height:40px; padding-right:5px;">
-                <button type="button" class="btn btn-round btn-success" style="float:right">Update</button>
+                <button type="button" class="btn btn-round btn-success" style="float:right" onclick="location.reload();">Update</button>
                 @*<button type="button" class="btn btn-round btn-info" style="float:right">Edit</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="myModal_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Edit Entry</h4>
+            </div>
+            <div class="modal-body">
+                Hi there, I am a Modal Example for Dashio Admin Panel.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -45,13 +63,16 @@
 
 </div>
 
+@Scripts.Render("~/Script/jquery")
 <script type="text/javascript">
     $('li a').removeClass("active");
     $('#tg-reports').addClass("active");
 
     $(document).ready(function () {
         console.log("ready");
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
         updateGrid();
+        
     });
     function updateGrid() {
         $.ajax({
@@ -70,10 +91,11 @@
                             <td data-title="Vehicle">`+ Json_Data[i]["vehicletype"] + `</td>
                             <td data-title="Place">`+ Json_Data[i]["placeofviolation"] + `</td>
                             <td data-title="Violation">`+ Json_Data[i]["vdesc"] + `</td>
-                            <td data-title="Action"><button type="button" class="btn btn-round btn-info btn-sm">Edit</button></td></tr>`;
+                            <td data-title="Action"><button type="button" class="btn btn-round btn-info btn-sm" data-toggle="modal" data-target="#myModal_edit">Edit</button></td></tr>`;
                     $('#tbl_apprehention tbody').append(Row);
 
                 }
+                $("#myModal_reload").modal("hide");
             },
             error: function (textStatus, errorThrown) {
                 // Success = false;//doesn't go here

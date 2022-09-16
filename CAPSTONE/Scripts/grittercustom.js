@@ -149,7 +149,7 @@ $(document).ready(function () {
             var div_length = document.getElementsByTagName("div").length - 1;
             if ($("div")[div_length].style.height == "65px") $("div")[div_length].remove()
             //document.getElementsByTagName("div")[div_length].remove();
-        }, 500);
+        }, 50);
     }
 
 });
