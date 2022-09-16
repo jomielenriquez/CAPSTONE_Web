@@ -60,6 +60,16 @@
                 <!-- page start-->
                 @Scripts.Render("~/Script/jquery")
                 @RenderBody()
+                <div class="modal fade " id="myModal_reload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                    <div style="text-align:center;font-size:50px;color:white;padding-top:45vh;">
+                        <div class="spinner-border" role="status">
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                            @* fa-circle-o-notch *@
+                            @* fa-spinner *@
+                            @* fa-refresh *@
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div style="padding-left:30px; padding-right:30px;">
                     </div>

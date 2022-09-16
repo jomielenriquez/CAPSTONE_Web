@@ -107,5 +107,33 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+        public string get_total()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_total_violators", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return dt.Rows[0]["return"].ToString();
+        }
+        public string get_total_today()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_total_violators_today", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return dt.Rows[0]["return"].ToString();
+        }
     }
 }
