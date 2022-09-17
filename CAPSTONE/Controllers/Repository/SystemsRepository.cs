@@ -9,6 +9,12 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
 using Newtonsoft.Json;
+using Microsoft.Ajax.Utilities;
+using System.Diagnostics.Contracts;
+using System.ComponentModel;
+using System.Net;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace CAPSTONE.Controllers.Repository
 {
@@ -134,6 +140,151 @@ namespace CAPSTONE.Controllers.Repository
                 con.Close();
             }
             return dt.Rows[0]["return"].ToString();
+        }
+
+        public string get_violation()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_violation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
+        public string insert_ticketcitation(
+            int tid,
+            string fname,
+            string address,
+            string licenseno,
+            string vehicletype,
+            string placeofviolation,
+            int violationid
+            )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_insert_ticketcitation", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@tid",tid );
+                    cmd.Parameters.AddWithValue("@fname", fname);
+                    cmd.Parameters.AddWithValue("@address", address);
+                    cmd.Parameters.AddWithValue("@licenseno", licenseno);
+                    cmd.Parameters.AddWithValue("@vehicletype", vehicletype);
+                    cmd.Parameters.AddWithValue("@placeofviolation", placeofviolation);
+                    cmd.Parameters.AddWithValue("@violationid", violationid);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch(Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
+        public string insert_account(
+            string fname,
+            string mname,
+            string lname,
+            string username,
+            string password,
+            string acnttype
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("prop_insert_account", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@fname", fname );
+                    cmd.Parameters.AddWithValue("@mname", mname);
+                    cmd.Parameters.AddWithValue("@lname", lname);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@acnttype", acnttype);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
+        public string insert_citation(
+            string fname,
+            string address,
+            string licneseno,
+            string birthdate,
+            string dateofapprehension,
+            string placeofviolation,
+            string violationid,
+            string vehicletype,
+            string classification,
+            string plateno
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_insert_citation", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@fname", fname);
+                    cmd.Parameters.AddWithValue("@address", address);
+                    cmd.Parameters.AddWithValue("@licneseno", licneseno);
+                    cmd.Parameters.AddWithValue("@birthdate", birthdate);
+                    cmd.Parameters.AddWithValue("@dateofapprehension", dateofapprehension);
+                    cmd.Parameters.AddWithValue("@placeofviolation", placeofviolation);
+                    cmd.Parameters.AddWithValue("@violationid", violationid);
+                    cmd.Parameters.AddWithValue("@vehicletype", vehicletype);
+                    cmd.Parameters.AddWithValue("@classification", classification);
+                    cmd.Parameters.AddWithValue("@plateno", plateno);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
+        public string delete_citation(string id)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_delete_citation", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
         }
     }
 }
