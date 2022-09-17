@@ -24,7 +24,7 @@
                             <td><input type="text" class="form-control" id="input_mi" size="1" maxlength="1"></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;" colspan="3">No</td>
+                            <td style="text-align:center;" colspan="3">House No</td>
                             <td style="text-align:center;" colspan="2">St. Subd.</td>
                             <td style="text-align:center;" colspan="1">City</td>
                         </tr>
@@ -261,7 +261,7 @@
                         <tr><td>Classification:</td><td>`+ classification + `</td></tr>
                         <tr><td>Plate No.:</td><td>`+ plateno +`</td></tr>
                     `);
-                    $("#myModal_Notification").modal("show");
+                    $("#myModal_Notification").modal({ backdrop: 'static', keyboard: false }, "show");
                 }
             },
             error: function (textStatus, errorThrown) {
