@@ -27,7 +27,7 @@
 
             <div class="top-menu">
                 <ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="@Url.Action("Index","Login")">Logout</a></li>
+                    <li><a class="logout" href="@Url.Action("Index", "Login")">Logout</a></li>
                 </ul>
             </div>
         </header>
@@ -36,7 +36,12 @@
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
                     <h5 class="centered">@Model.currentuser.fullname</h5>
-                    <h5 class="centered">@Model.currentuser.acnttype</h5>
+                    <h5 class="centered">
+                    @if (Model.currentuser.acnttype == "TENFORCER") {
+                        Model.currentuser.acnttype = "TRAFFIC ENFORCER";
+                    }
+                    @Model.currentuser.acnttype</h5>
+
                     @foreach (var menu in Model.menulist)
                     {
                         <li class="mt">
