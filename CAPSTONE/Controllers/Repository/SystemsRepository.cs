@@ -113,6 +113,20 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+        public string getdailyreport()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("prop_get_daily_report", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
         public string get_total()
         {
             DataTable dt = new DataTable();
@@ -285,6 +299,60 @@ namespace CAPSTONE.Controllers.Repository
                 return "ERROR";
             }
             return "SUCCESS";
+        }
+        public string GetUserFullName(string acntuid)
+        {
+            string fname = "";
+            DataTable dt = new DataTable();
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("prop_get_current_user", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@acntuid", acntuid);
+                    da.Fill(dt);
+                    con.Close();
+                }
+
+                fname = Convert.ToString(dt.Rows[0]["fullname"]);
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+
+            return fname;
+        }
+        public string proc_get_statistics()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_statistics", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
+        public string prop_get_confiscated_license()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("prop_get_confiscated_license", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
         }
     }
 }
