@@ -375,6 +375,10 @@
     <Content Include="Views\Systems\Apprehension_Report.cshtml" />
     <Content Include="Views\Systems\Enforcer_Apprehension_Report.cshtml" />
     <Content Include="Views\Systems\Enforcer_Fines_of_Violation.cshtml" />
+    <Content Include="Views\Systems\Statics.cshtml" />
+    <Content Include="Views\Systems\Daily.cshtml" />
+    <Content Include="Views\Systems\ConfiscatedLicense.cshtml" />
+    <Content Include="Views\Systems\ImpoundedVehicles.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

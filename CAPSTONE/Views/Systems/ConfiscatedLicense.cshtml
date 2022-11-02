@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "ConfiscatedLicense";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> Confiscated Driver's License</h4>
+            <section id="">
+                <table class="table table-bordered table-striped table-condensed cf" id="tbl_Confiscated">
+                    <thead class="cf">
+                        <tr>
+                            <th>Name</th>
+                            <th>Violation</th>
+                            <th>Plate No.</th>
+                            <th>License No.</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('li a').removeClass("active");
+    $('#tg-confiscated').addClass("active");
+
+    $(document).ready(function () {
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+        updateGrid();
+        //$("#myModal_reload").modal("hide"); // remove when API is working
+    });
+
+    function updateGrid() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/prop_get_confiscated_license",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                var Json_Data = JSON.parse(data);
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var Row = `<tr><td class="Name" data-title="Name">` + Json_Data[i]["fname"] + `</td>
+                            <td class="Address" data-title="Address">`+ Json_Data[i]["violation"] + `</td>
+                            <td class="Address" data-title="Address">`+ Json_Data[i]["plateno"] + `</td>
+                            <td class="Address" data-title="Address">`+ Json_Data[i]["licenseno"] + `</td>
+                            <td class="Address" data-title="Address">`+ new Date(Json_Data[i]["dateofapprehension"]).toISOString().split('T')[0] + `</td>`;
+                    $('#tbl_Confiscated tbody').append(Row);
+
+                }
+                $("#myModal_reload").modal("hide");
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+</script>
+
+
