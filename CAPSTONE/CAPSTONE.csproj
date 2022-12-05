@@ -169,6 +169,7 @@
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\buttonsDataTable.css" />
+    <Content Include="Content\CustomStyle.css" />
     <Content Include="Content\DataTable.css" />
     <Content Include="Content\jquery.gritter.css" />
     <Content Include="Content\style-responsive.css" />
@@ -389,6 +390,7 @@
     <Content Include="Views\Systems\ConfiscatedLicense.cshtml" />
     <Content Include="Views\Systems\ImpoundedVehicles.cshtml" />
     <Content Include="Views\Systems\SettledApprehensions.cshtml" />
+    <Content Include="Views\Systems\EnforcerAccounts.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

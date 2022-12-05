@@ -47,14 +47,43 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 data = someerm(data);
+                var JsonData = JSON.parse(data);
+                console.log(JsonData)
                 $("#myModalLabel").html("Total Number of Violators");
-                //alert(data);
-                $("#div_modal_body").html('<h4>' + data + '</h4>');
+
+                var insertToModalBody = `<h4>` + JsonData.Message + `</h4>` +
+                    `<section id="no-more-tables"><table class="table table-bordered table-striped table-condensed cf" id="tbl_today_list">
+                    <thead class="cf">
+                        <tr>
+                            <th>Name</th>
+                            <th>Violation</th>
+                            <th>Plate No.</th>
+                            <th>License No.</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table></section>`
+
+                $("#div_modal_body").html(insertToModalBody);
+
+                for (var i = 0; i < JsonData.List.length; i++) {
+                    var Row = `<tr><td class="Name" data-title="Name">` + JsonData.List[i]["fname"] + `</td>
+                            <td class="Violation" data-title="Violation">`+ JsonData.List[i]["vdesc"] + `</td>
+                            <td class="PlateNumber" data-title="PlateNumber">`+ JsonData.List[i]["plateno"] + `</td>
+                            <td class="LicenseNo" data-title="LicenseNo">`+ JsonData.List[i]["licenseno"] + `</td>
+                            <td class="DateOfApprehension" data-title="DateOfApprehension">`+ JsonData.List[i]["dateofapprehension"].split('T')[0] + `</td>`;
+                    $('#tbl_today_list tbody').append(Row);
+                }
+
+                $('#tbl_today_list').DataTable();
+
                 $("#myModal_reload").modal("hide");
                 $("#myModal").modal("show");
+
             },
             error: function (textStatus, errorThrown) {
-                // Success = false;//doesn't go here
                 gritter("Error", "Error processing the request.");
             }
         });
@@ -68,14 +97,42 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 data = someerm(data);
+                var JsonData = JSON.parse(data);
+                console.log(JsonData)
                 $("#myModalLabel").html("Number of Violators Today");
-                //alert(data);
-                $("#div_modal_body").html('<h4>' + data + '</h4>');
+
+                var insertToModalBody = `<h4>` + JsonData.Message + `</h4>` +
+                    `<section id="no-more-tables"><table class="table table-bordered table-striped table-condensed cf" id="tbl_today_list">
+                    <thead class="cf">
+                        <tr>
+                            <th>Name</th>
+                            <th>Violation</th>
+                            <th>Plate No.</th>
+                            <th>License No.</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table></section>`
+
+                $("#div_modal_body").html(insertToModalBody);
+
+                for (var i = 0; i < JsonData.List.length; i++) {
+                    var Row = `<tr><td class="Name" data-title="Name">` + JsonData.List[i]["fname"] + `</td>
+                            <td class="Violation" data-title="Violation">`+ JsonData.List[i]["vdesc"] + `</td>
+                            <td class="PlateNumber" data-title="PlateNumber">`+ JsonData.List[i]["plateno"] + `</td>
+                            <td class="LicenseNo" data-title="LicenseNo">`+ JsonData.List[i]["licenseno"] + `</td>
+                            <td class="DateOfApprehension" data-title="DateOfApprehension">`+ JsonData.List[i]["dateofapprehension"].split('T')[0] + `</td>`;
+                    $('#tbl_today_list tbody').append(Row);
+                }
+
+                $('#tbl_today_list').DataTable();
+
                 $("#myModal_reload").modal("hide");
                 $("#myModal").modal("show");
             },
             error: function (textStatus, errorThrown) {
-                // Success = false;//doesn't go here
                 gritter("Error", "Error processing the request.");
             }
         });
