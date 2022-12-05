@@ -9,7 +9,7 @@
     <div class="col-lg-12">
         <div class="content-panel">
             <h4><i class="fa fa-angle-right"></i> Total Number of Violators per Violations</h4>
-            <section id="">
+            <section id="no-more-tables">
                 <table class="table table-bordered table-striped table-condensed cf" id="tbl_statistics">
                     <thead class="cf">
                         <tr>
@@ -53,8 +53,8 @@
                     $('#tbl_statistics tbody').append(Row);
 
                 }
+                $("#tbl_statistics").DataTable();
                 $("#myModal_reload").modal("hide");
-
             },
             error: function (textStatus, errorThrown) {
                 // Success = false;//doesn't go here

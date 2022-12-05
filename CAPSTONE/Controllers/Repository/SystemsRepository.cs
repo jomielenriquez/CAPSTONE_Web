@@ -139,7 +139,20 @@ namespace CAPSTONE.Controllers.Repository
                 da.Fill(dt);
                 con.Close();
             }
-            return dt.Rows[0]["return"].ToString();
+            string Mess = dt.Rows[0]["return"].ToString();
+            DataTable dt_list = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_total_violators_list", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt_list);
+                con.Close();
+            }
+
+            string returnObject = "{\"Message\":\"" + Mess + "\", \"List\": " + JsonConvert.SerializeObject(dt_list) + "}";
+            return returnObject;
         }
         public string get_total_today()
         {
@@ -153,7 +166,20 @@ namespace CAPSTONE.Controllers.Repository
                 da.Fill(dt);
                 con.Close();
             }
-            return dt.Rows[0]["return"].ToString();
+            string Mess = dt.Rows[0]["return"].ToString();
+            DataTable dt_list = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_total_violators_today_list", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt_list);
+                con.Close();
+            }
+
+            string returnObject = "{\"Message\":\"" + Mess + "\", \"List\": " + JsonConvert.SerializeObject(dt_list) + "}";
+            return returnObject;
         }
 
         public string get_violation()

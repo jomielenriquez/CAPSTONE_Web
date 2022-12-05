@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Enforcer Accounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> Traffic Enforcer Accounts</h4>
+            <section id="no-more-tables">
+                @* tbl enforcer account will be inserted here programmatically *@
+            </section>
+            <div style="padding-right:0px; height:40px; padding-right:5px;">
+                <button type="button" class="btn btn-round btn-success" style="float:right" onclick="location.reload();">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/Script/jquery")
+
+<script type="text/javascript">
+    $('li a').removeClass("active");
+    $('#tg-Eaccounts').addClass("active");
+
+    $(document).ready(function () {
+        updateGrid();
+    });
+
+    function updateGrid() {
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+        document.getElementById("no-more-tables").innerHTML = `
+            <table class="table table-bordered table-striped table-condensed cf" id="tbl_Confiscated">
+                    <thead class="cf">
+                        <tr>
+                            <th>Name</th>
+                            <th>Violation</th>
+                            <th>Plate No.</th>
+                            <th>License No.</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>`;
+        $.ajax({
+            type: "POST",
+            url: "/Systems/prop_get_confiscated_license",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                var Json_Data = JSON.parse(data);
+                for (var i = 0; i < Json_Data.length; i++) {
+                    if (Json_Data[i]["violation"] != "DRIVING WITHOUT DRIVER'S LICENSE" && Json_Data[i]["isSettled"] != 1) {
+                        var Row = `<tr id="` + Json_Data[i]["tid"] + `"><td class="Name" data-title="Name">` + Json_Data[i]["fname"] + `</td>
+                                <td class="Violation" data-title="Violation">`+ Json_Data[i]["violation"] + `</td>
+                                <td class="PlateNumber" data-title="PlateNumber">`+ Json_Data[i]["plateno"] + `</td>
+                                <td class="LicenseNo" data-title="LicenseNo">`+ Json_Data[i]["licenseno"] + `</td>
+                                <td class="DateOfApprehension" data-title="DateOfApprehension">`+ Json_Data[i]["dateofapprehension"].split('T')[0] + `</td>
+                                <td>`+ Json_Data[i]["PendingStatus"] + `</td>
+                                <td class="Action" data-title="Action">
+                                    <button type="button" class="btn btn-round btn-info btn-sm" onclick="ClearBtnOnclick(this)"><i class="fa fa-check-square-o"></i> Clear</button>
+                                    <button type="button" class="btn btn-round btn-danger btn-sm" onclick="btn_delete(this)"><i class="fa fa-trash-o"></i> Delete</button>
+                                </td>`;
+                        $('#tbl_Confiscated tbody').append(Row);
+
+                    }
+                }
+                $('#tbl_Confiscated').DataTable();
+                $("#myModal_reload").modal("hide");
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+
+</script>

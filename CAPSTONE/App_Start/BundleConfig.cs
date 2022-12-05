@@ -30,7 +30,8 @@ namespace CAPSTONE
                       "~/Content/style.css",
                       "~/Content/style-responsive.css",
                       "~/Content/table-responsive.css",
-                      "~/Content/jquery.gritter.css"
+                      "~/Content/jquery.gritter.css",
+                      "~/Content/CustomStyle.css"
             ));
             bundles.Add(new StyleBundle("~/Content/DataTable").Include(
                 "~/Content/DataTable.css",

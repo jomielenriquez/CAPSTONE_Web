@@ -74,8 +74,9 @@
                 $("tr.no-records-found").remove();
                 $("div.fixed-table-loading").css("display", "none");
                 $("div.fixed-table-toolbar div.search").css("display", "none");
-                $("div.fixed-table-toolbar div.export").css("transform","translateY(-50px)")
-                $("div.fixed-table-toolbar div.export").css("z-index","9")
+                //$("div.fixed-table-toolbar div.export").css("transform","translateY(-50px)")
+                $("div.fixed-table-toolbar div.export").css("z-index", "9");
+                $("ul.dropdown-menu").css("transform", "translateX(-110px)");
 
                 $('#tbl_apprehention').DataTable({
                     dom: 'Bfrtip',
