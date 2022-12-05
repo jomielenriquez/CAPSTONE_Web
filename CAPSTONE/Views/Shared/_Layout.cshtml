@@ -7,16 +7,13 @@
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
-    @*<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap.min.css">*@
+
     @Styles.Render("~/Content/DataTable")
-    <title>@ViewBag.Title - CAPSTONE</title>
+    
+    <title>@ViewBag.Title - TMO</title>
     <link href="~/img/favicon.ico" rel="icon">
     @{ViewBag.prevPage = ViewBag.Title; }
-    <!-- Favicons -->
-    @*<link href="img/favicon.png" rel="icon">
-        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">*@
-
+    
     @Styles.Render("~/Content/Bootstrap")
 </head>
 
@@ -107,9 +104,7 @@
         <!--footer end-->
     </section>
     @Scripts.Render("~/Script/Bootstrap")
-    @Scripts.Render("~/Script/DataTaables")
-    @*<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>*@
-    @*<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap.min.js"></script>*@
+    @Scripts.Render("~/Script/DataTables")
 
 </body>
 
