@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "ImpoundedVehicles";
+    ViewBag.Title = "Impounded Vehicles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     <div class="col-lg-12">
         <div class="content-panel">
             <h4><i class="fa fa-angle-right"></i> Impounded Vehicles </h4>
-            <section id="section_tbl_Impounded">
+            <section id="no-more-tables">
                 @* table will be inserted here *@
             </section>
         </div>
@@ -44,6 +44,34 @@
     </div>
 </div>
 
+@* Delete modal *@
+<div class="modal fade " id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to delete this record?</h4>
+                <input id="input_rowid" style="display:none" />
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal style-form">
+                    <input typw="text" id="input_id" style="display:none" />
+                    <div class="form-group">
+                        <table style="margin:auto" id="tbl_delete">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" onclick="proceeddelete()">Yes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     $('li a').removeClass("active");
     $('#tg-impounded').addClass("active");
@@ -55,7 +83,7 @@
 
     function updateGrid() {
         $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
-        document.getElementById("section_tbl_Impounded").innerHTML = `
+        document.getElementById("no-more-tables").innerHTML = `
                 <table class="table table-bordered table-striped table-condensed cf" id="tbl_Impounded">
                     <thead class="cf">
                         <tr>
@@ -64,6 +92,7 @@
                             <th>Plate No.</th>
                             <th>Vehicle Type</th>
                             <th>Date</th>
+                            <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -87,7 +116,11 @@
                                 <td class="PlateNumber" data-title="PlateNumber">`+ Json_Data[i]["plateno"] + `</td>
                                 <td class="VehicleType" data-title="VehicleType">`+ Json_Data[i]["vehicletype"] + `</td>
                                 <td class="DateOfApprehension" data-title="DateOfApprehension">`+ Json_Data[i]["dateofapprehension"].split('T')[0] + `</td>
-                                <td class="Action" data-title="Action"><button type="button" class="btn btn-round btn-info btn-sm" onclick="ClearBtnOnclick(this)"><i class="fa fa-check-square-o"></i> Clear</button></td>`;
+                                <td>`+ Json_Data[i]["PendingStatus"] + `</td>
+                                <td class="Action" data-title="Action">
+                                    <button type="button" class="btn btn-round btn-info btn-sm" onclick="ClearBtnOnclick(this)"><i class="fa fa-check-square-o"></i> Clear</button>
+                                    <button type="button" class="btn btn-round btn-danger btn-sm" onclick="btn_delete(this)"><i class="fa fa-trash-o"></i> Delete</button>
+                                </td>`;
                         $('#tbl_Impounded tbody').append(Row);
                     }
                 }
@@ -137,7 +170,56 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 data = someerm(data);
+                gritter("Success", "Successfully Cleared");
+
+                $('#tbl_clear tbody').html("");
                 updateGrid();
+            },
+            error: function (textStatus, errorThrown) {
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+    function btn_delete(btn) {
+        var target_row = $(btn).closest('tr');
+        var rowid = target_row.attr('id'),
+            rowname = target_row.find('td.Name').text(),
+            rowviolation = target_row.find('td.Violation').text(),
+            rowvehicle = target_row.find('td.VehicleType').text(),
+            rowplatenumber = target_row.find('td.PlateNumber').text();
+        $("#input_id").val(rowid);
+        $("#tbl_delete tbody").html("");
+        $("#tbl_delete tbody").append(
+            `<tr><td>Name: </td><td>` + rowname + `</td></tr>
+            <tr><td>Violation: </td><td>`+ rowviolation + `</td></tr>
+            <tr><td>Vehicle Type: </td><td>`+ rowvehicle + `</td></tr>
+            <tr><td>Plate No.: </td><td>`+ rowplatenumber + `</td></tr>`
+        )
+
+        $("#myModal_delete").modal("show");
+    }
+    function proceeddelete() {
+        $("#myModal_delete").modal("hide");
+        //$("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+        $.ajax({
+            type: "POST",
+            url: "/Systems/delete_citation",
+            dataType: "text",
+            data: JSON.stringify({
+                "id": $("#input_id").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                $("#myModal_reload").modal('hide');
+                if (data == "SUCCESS") {
+                    gritter("Success", "Successfully Deleted");
+
+                    $('#tbl_apprehention tbody').html("");
+
+                    updateGrid();
+
+                }
             },
             error: function (textStatus, errorThrown) {
                 gritter("Error", "Error processing the request.");

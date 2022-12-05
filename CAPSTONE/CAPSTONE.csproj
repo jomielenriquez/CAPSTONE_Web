@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\buttonsDataTable.css" />
     <Content Include="Content\DataTable.css" />
     <Content Include="Content\jquery.gritter.css" />
     <Content Include="Content\style-responsive.css" />
@@ -222,6 +223,7 @@
     <Content Include="Scripts\advanced-datatable\js\jquery.dataTables.min.js" />
     <Content Include="Scripts\advanced-datatable\js\jquery.js" />
     <Content Include="Scripts\advanced-form-components.js" />
+    <Content Include="Scripts\bootstrapTableExport.js" />
     <Content Include="Scripts\bootstrap-datepicker\css\datepicker.css" />
     <Content Include="Scripts\bootstrap-datepicker\js\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-daterangepicker\date.js" />
@@ -240,11 +242,14 @@
     <Content Include="Scripts\bootstrap-wysihtml5\bootstrap-wysihtml5.css" />
     <Content Include="Scripts\bootstrap-wysihtml5\bootstrap-wysihtml5.js" />
     <Content Include="Scripts\bootstrap-wysihtml5\wysihtml5-0.3.0.js" />
+    <Content Include="Scripts\bootstrapTable.js" />
     <Content Include="Scripts\bootstrap\css\bootstrap.css" />
     <Content Include="Scripts\bootstrap\css\bootstrap.min.css" />
     <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\bootstrap\js\bootstrap.js" />
     <Content Include="Scripts\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Scripts\buttonPrint.js" />
+    <Content Include="Scripts\buttonsDataTable.js" />
     <Content Include="Scripts\calendar-conf-events.js" />
     <Content Include="Scripts\chart-master\Chart.js" />
     <Content Include="Scripts\chartjs-conf.js" />
@@ -318,6 +323,7 @@
     <Content Include="Scripts\php-mail-form\validate.js" />
     <Content Include="Scripts\raphael\raphael.min.js" />
     <Content Include="Scripts\sparkline-chart.js" />
+    <Content Include="Scripts\tableExport.js" />
     <Content Include="Scripts\tasks.js" />
     <Content Include="Scripts\xchart\d3.v3.min.js" />
     <Content Include="Scripts\xchart\xcharts.css" />
