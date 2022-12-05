@@ -105,7 +105,21 @@ namespace CAPSTONE.Controllers
 
             return View(userControl);
         }
+        public ActionResult SettledApprehensions(string id)
+        {
+            UserControl userControl = new UserControl();
 
+            SystemsRepository systemsRepository = new SystemsRepository();
+
+
+            userControl.currentuser = systemsRepository.GetCurrentUser(id);
+
+            if (userControl.currentuser.acnttype == "" || userControl.currentuser.acnttype == null) return RedirectToAction("Index", "Login");
+
+            userControl.menulist = systemsRepository.GetMenu(userControl.currentuser.acnttype);
+
+            return View(userControl);
+        }
         public ActionResult About(string id)
         {
             UserControl userControl = new UserControl();
@@ -286,6 +300,21 @@ namespace CAPSTONE.Controllers
         {
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.prop_get_confiscated_license();
+        }
+        public string proc_get_setteled_apprehensions()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_setteled_apprehensions();
+        }
+        public string proc_clear_citation(
+            string tid,
+            string clearedby
+        )
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_clear_citation(
+                tid,clearedby
+            );
         }
     }
 }

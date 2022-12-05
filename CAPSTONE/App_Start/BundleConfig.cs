@@ -32,6 +32,7 @@ namespace CAPSTONE
                       "~/Content/table-responsive.css",
                       "~/Content/jquery.gritter.css"
             ));
+            bundles.Add(new StyleBundle("~/Content/DataTable").Include("~/Content/DataTable.css"));
             bundles.Add(new ScriptBundle("~/Script/Bootstrap").Include(
                       "~/Scripts/jquery/jquery.min.js",
                       "~/Scripts/bootstrap/js/bootstrap.min.js",
@@ -44,6 +45,10 @@ namespace CAPSTONE
             ));
             bundles.Add(new ScriptBundle("~/Script/jquery").Include(
                       "~/Scripts/jquery/jquery.min.js"
+            ));
+            bundles.Add(new ScriptBundle("~/Script/DataTaables").Include(
+                "~/Scripts/JQueryDataTable.js",
+                "~/Scripts/DataTable.js"
             ));
         }
     }

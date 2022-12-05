@@ -354,5 +354,44 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+        public string proc_get_setteled_apprehensions()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_setteled_apprehensions", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
+        public string proc_clear_citation(
+            string tid,
+            string clearedby
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_clear_citation", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@tid", tid);
+                    cmd.Parameters.AddWithValue("@clearedby", clearedby);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
     }
 }
