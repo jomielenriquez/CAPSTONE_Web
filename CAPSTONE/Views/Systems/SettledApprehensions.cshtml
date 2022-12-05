@@ -1,23 +1,24 @@
 ﻿
 @{
-    ViewBag.Title = "ConfiscatedLicense";
+    ViewBag.Title = "Settled Apprehensions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <div class="row mt">
     <div class="col-lg-12">
         <div class="content-panel">
-            <h4><i class="fa fa-angle-right"></i> Confiscated Driver's License</h4>
+            <h4><i class="fa fa-angle-right"></i>Records of Settled Apprehensions</h4>
             <section id="">
-                <table class="table table-bordered table-striped table-condensed cf" id="tbl_Confiscated">
+                <table class="table table-bordered table-striped table-condensed cf" id="tbl_Impounded">
                     <thead class="cf">
                         <tr>
                             <th>Name</th>
                             <th>Violation</th>
-                            <th>Plate No.</th>
                             <th>License No.</th>
+                            <th>Plate No.</th>
+                            <th>Vehicle Type</th>
                             <th>Date</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -28,9 +29,10 @@
     </div>
 </div>
 
+
 <script type="text/javascript">
     $('li a').removeClass("active");
-    $('#tg-confiscated').addClass("active");
+    $('#tg-settled').addClass("active");
 
     $(document).ready(function () {
         $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
@@ -41,26 +43,29 @@
     function updateGrid() {
         $.ajax({
             type: "POST",
-            url: "/Systems/prop_get_confiscated_license",
+            url: "/Systems/proc_get_setteled_apprehensions",
             dataType: "text",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 data = someerm(data);
 
                 var Json_Data = JSON.parse(data);
+                console.log(Json_Data)
                 for (var i = 0; i < Json_Data.length; i++) {
-                    if (Json_Data[i]["violation"] != "DRIVING WITHOUT DRIVER'S LICENSE"){
+                    if (Json_Data[i]["isSettled"] == 1) {
                         var Row = `<tr><td class="Name" data-title="Name">` + Json_Data[i]["fname"] + `</td>
-                                <td class="Address" data-title="Address">`+ Json_Data[i]["violation"] + `</td>
-                                <td class="Address" data-title="Address">`+ Json_Data[i]["plateno"] + `</td>
+                                <td class="Address" data-title="Address">`+ Json_Data[i]["vdesc"] + `</td>
                                 <td class="Address" data-title="Address">`+ Json_Data[i]["licenseno"] + `</td>
+                                <td class="Address" data-title="Address">`+ Json_Data[i]["plateno"] + `</td>
+                                <td class="Address" data-title="Address">`+ Json_Data[i]["vehicletype"] + `</td>
                                 <td class="Address" data-title="Address">`+ Json_Data[i]["dateofapprehension"].split('T')[0] + `</td>`;
-                        $('#tbl_Confiscated tbody').append(Row);
+                        $('#tbl_Impounded tbody').append(Row);
 
                     }
 
                 }
                 $("#myModal_reload").modal("hide");
+                $('#tbl_Impounded').DataTable();
 
             },
             error: function (textStatus, errorThrown) {
@@ -70,5 +75,6 @@
         });
     }
 </script>
+
 
 

@@ -7,6 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    @*<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap.min.css">*@
+    @Styles.Render("~/Content/DataTable")
     <title>@ViewBag.Title - CAPSTONE</title>
     <link href="~/img/favicon.ico" rel="icon">
     @{ViewBag.prevPage = ViewBag.Title; }
@@ -35,12 +38,14 @@
             <div id="sidebar" class="nav-collapse ">
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
-                    <h5 class="centered">@Model.currentuser.fullname</h5>
+                    <h5 class="centered" id="userName">@Model.currentuser.fullname</h5>
                     <h5 class="centered">
-                    @if (Model.currentuser.acnttype == "TENFORCER") {
-                        Model.currentuser.acnttype = "TRAFFIC ENFORCER";
-                    }
-                    @Model.currentuser.acnttype</h5>
+                        @if (Model.currentuser.acnttype == "TENFORCER")
+                        {
+                            Model.currentuser.acnttype = "TRAFFIC ENFORCER";
+                        }
+                        @Model.currentuser.acnttype
+                    </h5>
 
                     @foreach (var menu in Model.menulist)
                     {
@@ -63,6 +68,7 @@
         <section id="main-content">
             <section class="wrapper">
                 <!-- page start-->
+
                 @Scripts.Render("~/Script/jquery")
                 @RenderBody()
                 <div class="modal fade " id="myModal_reload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -101,6 +107,9 @@
         <!--footer end-->
     </section>
     @Scripts.Render("~/Script/Bootstrap")
+    @Scripts.Render("~/Script/DataTaables")
+    @*<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>*@
+    @*<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap.min.js"></script>*@
 
 </body>
 
