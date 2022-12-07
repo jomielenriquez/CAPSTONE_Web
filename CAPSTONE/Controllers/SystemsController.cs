@@ -2,6 +2,8 @@
 using CAPSTONE.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
@@ -335,6 +337,19 @@ namespace CAPSTONE.Controllers
         {
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_all_enforcer_account();
+        }
+        public string proc_update_account(
+            string acntid,
+            string fname,
+            string mname,
+            string lname,
+            string username,
+            string password
+
+        )
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_update_account(acntid, fname, mname, lname, username, password);
         }
     }
 }
