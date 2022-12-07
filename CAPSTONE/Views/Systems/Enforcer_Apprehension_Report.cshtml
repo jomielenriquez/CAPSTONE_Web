@@ -47,7 +47,12 @@
                         </tr>
                         <tr>
                             <td colspan="6"><h5>Place of Violation (Street, Barangay)</h5>
-                            <input type="text" class="form-control" id="input_placeofviolation"></td>
+                            @*<input type="text" class="form-control" id="input_placeofviolation">*@
+                            <select class="form-control" name="select_PlaceViolation" id="select_PlaceViolation">
+                                <option selected="selected">Please select</option>
+                            </select>
+                            </td>
+
                         </tr>
                         <tr>
                             <td colspan="6"><h5>Vehicle Type</h5><input type="text" class="form-control" id="input_vehicletype"></td>
@@ -149,6 +154,28 @@
             }
         });
 
+        $.ajax({
+            type: "POST",
+            url: "/Systems/prop_get_compound",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                $("#select_PlaceViolation").html('<option selected="selected">Please select</option>');
+                var Json_Data = JSON.parse(data);
+                console.log(Json_Data);
+                for (var i = 0; i < Json_Data.length; i++) {
+                    $("#select_PlaceViolation").append("<option value='" + Json_Data[i]["cid"] + "'>" + Json_Data[i]["Compound"] + "</option>")
+                }
+                $("#myModal_reload").modal('hide');
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
     });
 
     function btn_submit() {
@@ -159,7 +186,7 @@
             licneseno = $("#input_licenseno").val(),
             birthdate = $("#input_birthdate").val(),
             dateofapprehension = $("#input_dateofapprehension").val(),
-            placeofviolation = $("#input_placeofviolation").val(),
+            placeofviolation = $("#select_PlaceViolation option:selected").text(),//$("#input_placeofviolation").val() ,
             violationid = $("#select_Violation").val(),
             vehicletype = $("#input_vehicletype").val(),
             classification = $('input[name="radio_classification"]:checked').val(),
@@ -202,8 +229,12 @@
             $("#input_dateofapprehension").css("border-color", "red");
             counterror++;
         }
-        if ($("#input_placeofviolation").val() == "") {
-            $("#input_placeofviolation").css("border-color", "red");
+        //if ($("#input_placeofviolation").val() == "") {
+        //    $("#input_placeofviolation").css("border-color", "red");
+        //    counterror++;
+        //}
+        if ($("#select_PlaceViolation option:selected").text() == "") {
+            $("#select_PlaceViolation").css("border-color", "red");
             counterror++;
         }
         if ($("#select_Violation").val() == "Please select") {
