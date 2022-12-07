@@ -419,5 +419,20 @@ namespace CAPSTONE.Controllers.Repository
             }
             return "SUCCESS";
         }
+
+        public string proc_get_all_enforcer_account()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_all_enforcer_account", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
     }
 }

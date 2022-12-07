@@ -331,5 +331,10 @@ namespace CAPSTONE.Controllers
                 tid,clearedby
             );
         }
+        public string proc_get_all_enforcer_account()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_all_enforcer_account();
+        }
     }
 }
