@@ -34,12 +34,8 @@
             <table class="table table-bordered table-striped table-condensed cf" id="tbl_Confiscated">
                     <thead class="cf">
                         <tr>
-                            <th>Name</th>
-                            <th>Violation</th>
-                            <th>Plate No.</th>
-                            <th>License No.</th>
-                            <th>Date</th>
-                            <th>Status</th>
+                            <th>Fullname</th>
+                            <th>Username</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -48,7 +44,7 @@
                 </table>`;
         $.ajax({
             type: "POST",
-            url: "/Systems/prop_get_confiscated_license",
+            url: "/Systems/proc_get_all_enforcer_account",
             dataType: "text",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -57,15 +53,10 @@
                 var Json_Data = JSON.parse(data);
                 for (var i = 0; i < Json_Data.length; i++) {
                     if (Json_Data[i]["violation"] != "DRIVING WITHOUT DRIVER'S LICENSE" && Json_Data[i]["isSettled"] != 1) {
-                        var Row = `<tr id="` + Json_Data[i]["tid"] + `"><td class="Name" data-title="Name">` + Json_Data[i]["fname"] + `</td>
-                                <td class="Violation" data-title="Violation">`+ Json_Data[i]["violation"] + `</td>
-                                <td class="PlateNumber" data-title="PlateNumber">`+ Json_Data[i]["plateno"] + `</td>
-                                <td class="LicenseNo" data-title="LicenseNo">`+ Json_Data[i]["licenseno"] + `</td>
-                                <td class="DateOfApprehension" data-title="DateOfApprehension">`+ Json_Data[i]["dateofapprehension"].split('T')[0] + `</td>
-                                <td>`+ Json_Data[i]["PendingStatus"] + `</td>
+                        var Row = `<tr id="` + Json_Data[i]["acntid"] + `"><td class="Name" data-title="Name">` + Json_Data[i]["fullname"] + `</td>
+                                <td class="Violation" data-title="Violation">`+ Json_Data[i]["username"] + `</td>
                                 <td class="Action" data-title="Action">
-                                    <button type="button" class="btn btn-round btn-info btn-sm" onclick="ClearBtnOnclick(this)"><i class="fa fa-check-square-o"></i> Clear</button>
-                                    <button type="button" class="btn btn-round btn-danger btn-sm" onclick="btn_delete(this)"><i class="fa fa-trash-o"></i> Delete</button>
+                                    <button type="button" class="btn btn-round btn-info btn-sm" onclick="ClearBtnOnclick(this)"><i class="fa fa-pencil-square-o"></i> Edit</button>
                                 </td>`;
                         $('#tbl_Confiscated tbody').append(Row);
 
