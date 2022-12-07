@@ -434,5 +434,40 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+
+        public string proc_update_account(
+            string acntid,
+            string fname,
+            string mname,
+            string lname,
+            string username,
+            string password
+
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_update_account", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@acntid", acntid);
+                    cmd.Parameters.AddWithValue("@fname", fname);
+                    cmd.Parameters.AddWithValue("@mname", mname);
+                    cmd.Parameters.AddWithValue("@lname", lname);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
     }
 }
