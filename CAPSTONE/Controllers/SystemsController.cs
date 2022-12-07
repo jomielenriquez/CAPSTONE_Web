@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace CAPSTONE.Controllers
 {
@@ -350,6 +351,21 @@ namespace CAPSTONE.Controllers
         {
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_update_account(acntid, fname, mname, lname, username, password);
+        }
+        public string prop_get_record_by_plateno(string platenumber)
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.prop_get_record_by_plateno(platenumber);
+        }
+        public string prop_get_compound()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.prop_get_compound();
+        }
+        public string proc_get_monthly_report()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_monthly_report();
         }
     }
 }
