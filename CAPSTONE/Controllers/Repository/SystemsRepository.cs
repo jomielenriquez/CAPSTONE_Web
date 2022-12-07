@@ -469,5 +469,50 @@ namespace CAPSTONE.Controllers.Repository
             }
             return "SUCCESS";
         }
+
+        public string prop_get_record_by_plateno(string platenumber)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("prop_get_record_by_plateno", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@platenumber", platenumber);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
+
+        public string prop_get_compound()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("prop_get_compound", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
+        public string proc_get_monthly_report()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_monthly_report", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
     }
 }
