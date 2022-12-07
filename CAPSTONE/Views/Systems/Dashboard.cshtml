@@ -16,6 +16,11 @@
     <button type="button" class="btn btn-primary btn-lg" onclick="get_total_today();">Today's List</button>
 </div>
 
+<canvas id="myChart" style="width:100%;max-width:100%; height:50vh"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
 <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -24,7 +29,7 @@
                 <h4 class="modal-title" id="myModalLabel"></h4>
             </div>
             <div class="modal-body" id="div_modal_body">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -38,6 +43,65 @@
     $('li a').removeClass("active");
     $('#tg-dashboard').addClass("active");
 
+    $(document).ready(function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_monthly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                var Json_Data = JSON.parse(data);
+                //console.log(Json_Data);
+
+                const xVal = [];
+                const datas = [];
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    //    $("#select_Violation").append("<option value='" + Json_Data[i]["vid"] + "'>" + Json_Data[i]["vdesc"] + "</option>")
+                    xVal.push(Json_Data[i]["month-words"]);
+                    datas.push(Json_Data[i]["count"]);
+                }
+
+                var xValues = xVal;
+
+                new Chart("myChart", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            data: datas,
+                            borderColor: "#4ECDC4",
+                            fill: false
+                        },
+                            //{
+                            //    data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
+                            //    borderColor: "green",
+                            //    fill: false
+                            //}, {
+                            //    data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
+                            //    borderColor: "blue",
+                            //    fill: false
+                            //    }
+                        ]
+                    },
+                    options: {
+                        legend: { display: false }
+                    }
+                });
+
+                $("#myModal_reload").modal('hide');
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    })
+
     function get_total() {
         $("#myModal_reload").modal("show");
         $.ajax({
@@ -48,7 +112,7 @@
             success: function (data) {
                 data = someerm(data);
                 var JsonData = JSON.parse(data);
-                console.log(JsonData)
+                //console.log(JsonData)
                 $("#myModalLabel").html("Total Number of Violators");
 
                 var insertToModalBody = `<h4>` + JsonData.Message + `</h4>` +
