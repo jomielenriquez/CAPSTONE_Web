@@ -514,5 +514,42 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+        public string proc_update_user_location(string uid, string lat, string longi)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_update_user_location", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@uid", uid);
+                    cmd.Parameters.AddWithValue("@lat", lat);
+                    cmd.Parameters.AddWithValue("@long", longi);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
+        public string proc_get_pda_location()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_pda_location", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
     }
 }

@@ -9,6 +9,8 @@ using System.Security.AccessControl;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Web.UI.WebControls;
 
 namespace CAPSTONE.Controllers
 {
@@ -366,6 +368,16 @@ namespace CAPSTONE.Controllers
         {
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_monthly_report();
+        }
+        public string proc_update_user_location(string uid, string lat, string longi)
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_update_user_location(uid, lat, longi);
+        }
+        public string proc_get_pda_location()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_pda_location();
         }
     }
 }
