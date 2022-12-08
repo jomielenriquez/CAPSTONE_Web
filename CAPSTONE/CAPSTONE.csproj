@@ -393,6 +393,7 @@
     <Content Include="Views\Systems\SettledApprehensions.cshtml" />
     <Content Include="Views\Systems\EnforcerAccounts.cshtml" />
     <Content Include="Views\Public\Index.cshtml" />
+    <Content Include="Views\Systems\PDALocation.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
