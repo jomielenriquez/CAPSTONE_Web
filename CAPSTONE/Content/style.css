@@ -524,7 +524,8 @@ ul.sidebar-menu li a.active i {
     padding-bottom: 15px;
     padding-top: 0px;
     width: 100%;
-    min-height:82.5vh;
+    /*min-height:82.5vh;*/
+    min-height: 86vh !important;
 }
 
 a.logo {
