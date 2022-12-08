@@ -155,6 +155,21 @@ namespace CAPSTONE.Controllers
 
             return View(userControl);
         }
+        public ActionResult PDALocation(string id)
+        {
+            UserControl userControl = new UserControl();
+
+            SystemsRepository systemsRepository = new SystemsRepository();
+
+
+            userControl.currentuser = systemsRepository.GetCurrentUser(id);
+
+            if (userControl.currentuser.acnttype == "" || userControl.currentuser.acnttype == null) return RedirectToAction("Index", "Login");
+
+            userControl.menulist = systemsRepository.GetMenu(userControl.currentuser.acnttype);
+
+            return View(userControl);
+        }
         public ActionResult Dashboard(string id)
         {
             UserControl userControl = new UserControl();

@@ -6,7 +6,7 @@ select * from tblAccounts
 select * from tblmenu
 
 --insert new
---insert into tblmenu(text,acnttype,action,controller,icon,tagid) values('Enforcer Accounts', 'ADMIN', 'EnforcerAccounts','Systems','fa-users','tg-Eaccounts')
+--insert into tblmenu(text,acnttype,action,controller,icon,tagid) values('PDA Location', 'ADMIN', 'PDALocation','Systems','fa-map-marker','tg-pdalocation')
 
 --insert about
 --delete tblmenu where id=11
