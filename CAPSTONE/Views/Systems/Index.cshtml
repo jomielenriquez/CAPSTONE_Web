@@ -15,7 +15,10 @@
     $('li a').removeClass("active");
 
     $(document).ready(function () {
-
+        if ($("#userType").val() == "ADMIN") {
+            $("#myChart").css("display", "none");
+            return;
+        }
         $.ajax({
             type: "POST",
             url: "/Systems/proc_get_monthly_report",
