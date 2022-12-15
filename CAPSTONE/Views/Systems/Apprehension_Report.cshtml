@@ -98,6 +98,11 @@
                 });
 
                 //===================================
+                if ($("#userType").val() == "TENFORCER") {
+                    $("#tbl_apprehention_filter").css("display", "none");
+                    $(".dt-buttons").css("display", "none");
+                    $(".fixed-table-toolbar").css("display", "none");
+                }
                 $("#myModal_reload").modal("hide");
             },
             error: function (textStatus, errorThrown) {

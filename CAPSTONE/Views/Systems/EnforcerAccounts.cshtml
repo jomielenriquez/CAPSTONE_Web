@@ -23,7 +23,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">Are you sure you want to clear this record?</h4>
+                <h4 class="modal-title" id="myModalLabel">Are you sure you want to create this account?</h4>
                 <input id="input_rowid" style="display:none" />
             </div>
             <div class="modal-body">
@@ -255,23 +255,23 @@
             userName = $("#inp_UserName").val(),
             password = $("#inp_Pass").val();
 
-        if (firstName.length > 4) {
+        if (firstName.length < 4) {
             gritter("Error", "Please enter first name atleast 4 characters");
             return false;
         }
-        if (middleName.length > 4) {
-            gritter("Error", "Please enter middle name atleast 4 characters");
+        if (middleName.length < 1) {
+            gritter("Error", "Please enter middle name atleast 1 character");
             return false;
         }
-        if (lastName.length > 4) {
+        if (lastName.length < 4) {
             gritter("Error", "Please enter last name atleast 4 characters");
             return false;
         }
-        if (userName.length > 4) {
+        if (userName.length < 4) {
             gritter("Error", "Please enter user name atleast 4 characters");
             return false;
         }
-        if (password.length > 4) {
+        if (password.length < 4) {
             gritter("Error", "Please enter password atleast 4 characters");
             return false;
         }

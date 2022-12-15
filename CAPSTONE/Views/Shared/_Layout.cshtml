@@ -36,6 +36,7 @@
                 <!-- sidebar menu start-->
                 <ul class="sidebar-menu" id="nav-accordion">
                     <h5 class="centered" id="userName">@Model.currentuser.fullname</h5>
+                    <input type="text" id="userType" value="@Model.currentuser.acnttype" style="display:none"/>
                     <h5 class="centered">
                         @if (Model.currentuser.acnttype == "TENFORCER")
                         {
