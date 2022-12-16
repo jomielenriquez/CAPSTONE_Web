@@ -578,6 +578,71 @@ namespace CAPSTONE.Controllers.Repository
                 con.Close();
             }
             return JsonConvert.SerializeObject(dt);
+        
+        }
+        public string proc_update_confiscated_clerk(
+            string name,
+            string licenseno,
+            string dateofapprehension,
+            string platenumber,
+            string violationid,
+            string editid
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_update_confiscated_clerk", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@licenseno", licenseno);
+                    cmd.Parameters.AddWithValue("@dateofapprehension", dateofapprehension);
+                    cmd.Parameters.AddWithValue("@platenumber", platenumber);
+                    cmd.Parameters.AddWithValue("@violationid", violationid);
+                    cmd.Parameters.AddWithValue("@editid", editid);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
+        }
+        public string proc_update_impounded_vehicle(
+            string name,
+            string dateofapprehension,
+            string vehicle,
+            string violationid,
+            string editid
+        )
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(constr))
+                {
+                    SqlCommand cmd = new SqlCommand("proc_update_impounded_vehicle", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@name", name);
+                    cmd.Parameters.AddWithValue("@dateofapprehension", dateofapprehension);
+                    cmd.Parameters.AddWithValue("@vehicle", vehicle);
+                    cmd.Parameters.AddWithValue("@violationid", violationid);
+                    cmd.Parameters.AddWithValue("@editid", editid);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "ERROR";
+            }
+            return "SUCCESS";
         }
     }
 }

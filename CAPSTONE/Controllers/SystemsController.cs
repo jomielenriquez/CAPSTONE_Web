@@ -404,5 +404,28 @@ namespace CAPSTONE.Controllers
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_pda_location();
         }
+        public string proc_update_confiscated_clerk(
+            string name,
+            string licenseno,
+            string dateofapprehension,
+            string platenumber,
+            string violationid,
+            string editid
+        )
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_update_confiscated_clerk(name,licenseno,dateofapprehension,platenumber,violationid,editid);
+        }
+        public string proc_update_impounded_vehicle(
+            string name,
+            string dateofapprehension,
+            string vehicle,
+            string violationid,
+            string editid
+        )
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_update_impounded_vehicle(name, dateofapprehension, vehicle, violationid, editid);
+        }
     }
 }
