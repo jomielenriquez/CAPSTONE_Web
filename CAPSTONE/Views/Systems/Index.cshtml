@@ -4,10 +4,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div style="text-align:center">
-<h2>Welcome to Traffic Violation Information Management with Electronic Ticketing System for Traffic Management Office-Tanauan</h2>
+    <h2>Welcome to Traffic Violation Information Management with Electronic Ticketing System for Traffic Management Office-Tanauan</h2>
 </div>
 
-<canvas id="myChart" style="width:100%;max-width:100%; height:30vh"></canvas>
+
+<div id="div_Reports">
+    <h3>Monthly Report</h3>
+    <canvas id="myChart" style="width:100%;max-width:100%; height:50vh"></canvas>
+    <h3>Weekly Report</h3>
+    <canvas id="weeklyReport" style="width:100%;max-width:100%; height:50vh"></canvas>
+    <h3>Daily Report</h3>
+    <canvas id="dailyReport" style="width:100%;max-width:100%; height:50vh"></canvas>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
@@ -16,7 +24,7 @@
 
     $(document).ready(function () {
         if ($("#userType").val() == "ADMIN") {
-            $("#myChart").css("display", "none");
+            $("#div_Reports").css("display", "none");
             return;
         }
         $.ajax({
@@ -75,6 +83,94 @@
             }
         });
 
+        // get weekly report
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_weekly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                const xVal = [];
+                const datas = [];
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    xVal.push(Json_Data[i]["Week"]);
+                    datas.push(Json_Data[i]["Record"]);
+                }
+
+                var xValues = xVal;
+
+                new Chart("weeklyReport", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            data: datas,
+                            borderColor: "#4ECDC4",
+                            fill: false
+                        },
+                        ]
+                    },
+                    options: {
+                        legend: { display: false }
+                    }
+                });
+
+                $("#myModal_reload").modal('hide');
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+
+        // get daily report
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_daily_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                const xVal = [];
+                const datas = [];
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    xVal.push(Json_Data[i]["dateofapprehension"].split('T')[0]);
+                    datas.push(Json_Data[i]["Record"]);
+                }
+
+                var xValues = xVal;
+
+                new Chart("dailyReport", {
+                    type: "line",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+                            data: datas,
+                            borderColor: "#4ECDC4",
+                            fill: false
+                        },
+                        ]
+                    },
+                    options: {
+                        legend: { display: false }
+                    }
+                });
+
+                $("#myModal_reload").modal('hide');
+
+            },
+            error: function (textStatus, errorThrown) {
+                gritter("Error", "Error processing the request.");
+            }
+        });
         //var xValues = ["january", 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
         //new Chart("myChart", {
