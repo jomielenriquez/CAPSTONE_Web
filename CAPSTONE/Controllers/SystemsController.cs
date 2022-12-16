@@ -384,6 +384,16 @@ namespace CAPSTONE.Controllers
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_monthly_report();
         }
+        public string proc_get_weekly_report()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_weekly_report();
+        }
+        public string proc_get_daily_report()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_daily_report();
+        }
         public string proc_update_user_location(string uid, string lat, string longi)
         {
             SystemsRepository systemsRepository = new SystemsRepository();
