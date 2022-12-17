@@ -11,12 +11,14 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Web.UI.WebControls;
+using System.Web.Http.Cors;
 
 namespace CAPSTONE.Controllers
 {
     public class SystemsController : Controller
     {
         // GET: Systems
+        [EnableCors(origins: "https://trafficmanagementofficetanauan.somee.com", headers: "*", methods: "*")]
         public ActionResult Index(string id)
         {
             UserControl userControl = new UserControl();
