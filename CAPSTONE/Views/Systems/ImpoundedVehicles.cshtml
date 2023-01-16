@@ -216,7 +216,9 @@
                         $('#tbl_Impounded tbody').append(Row);
                     }
                 }
-                $('#tbl_Impounded').DataTable();
+                $('#tbl_Impounded').DataTable({
+                    order: [[4, 'desc']],
+                });
                 $("#myModal_reload").modal("hide");
 
             },

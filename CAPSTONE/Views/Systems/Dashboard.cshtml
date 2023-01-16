@@ -70,7 +70,24 @@
                 console.log(Json_Data);
 
                 $("#HolderName").html("PDA User: " + Json_Data[0]["fname"] + " " + Json_Data[0]["lname"])
-                $("#divLocation").html('<iframe src="https://maps.google.com/maps?q=' + Json_Data[0]["latitude"] + ',' + Json_Data[0]["longetude"] + '&hl=es;z=14&amp;output=embed" width="100%" height="70vh" frameborder="0" style="border:0;height:80vh !important"></iframe>');
+                $("#divLocation").html('<iframe onload="iframe_onload()" id="iflocation" src="https://maps.google.com/maps?q=' + Json_Data[0]["latitude"] + ',' + Json_Data[0]["longetude"] + '&hl=es;z=14&amp;output=embed" width="100%" height="70vh" frameborder="0" style="border:0;height:80vh !important"></iframe>');
+
+                //// API key is needed
+                //$.get({
+                //    url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${longi}&sensor=false&key=${apikey}`, success(data) {
+                //        console.log(data.results[0].formatted_address);
+                //    }
+                //});
+
+
+                //var ifr = document.getElementById('iflocation');
+
+                //var url = 'https://maps.google.com/maps?q=' + Json_Data[0]["latitude"] + ',' + Json_Data[0]["longetude"] + '&hl=es;z=14&amp;output=embed';
+
+                //console.log(url);
+
+                //$("div.address").innerHTML
+
                 //for (var i = 0; i < Json_Data.length; i++) {
                 //    $("#select_Violation").append("<option value='" + Json_Data[i]["vid"] + "'>" + Json_Data[i]["vdesc"] + "</option>")
                 //}
@@ -332,5 +349,10 @@
                 gritter("Error", "Error processing the request.");
             }
         });
+    }
+    function iframe_onload() {
+        setTimeout(function () {
+            alert($("div.address").innerHTML);
+        }, 2000);
     }
 </script>

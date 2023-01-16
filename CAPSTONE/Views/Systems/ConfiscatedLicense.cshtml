@@ -216,7 +216,9 @@
 
                     }
                 }
-                $('#tbl_Confiscated').DataTable();
+                $('#tbl_Confiscated').DataTable({
+                    order: [[4, 'desc']],
+                });
                 $("#myModal_reload").modal("hide");
 
             },
