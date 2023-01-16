@@ -70,7 +70,7 @@
                 console.log(Json_Data);
 
                 $("#HolderName").html("PDA User: " + Json_Data[0]["fname"] + " " + Json_Data[0]["lname"])
-                $("#divLocation").html('<iframe onload="iframe_onload()" id="iflocation" src="https://maps.google.com/maps?q=' + Json_Data[0]["latitude"] + ',' + Json_Data[0]["longetude"] + '&hl=es;z=14&amp;output=embed" width="100%" height="70vh" frameborder="0" style="border:0;height:80vh !important"></iframe>');
+                $("#divLocation").html('<iframe id="iflocation" src="https://maps.google.com/maps?q=' + Json_Data[0]["latitude"] + ',' + Json_Data[0]["longetude"] + '&hl=es;z=14&amp;output=embed" width="100%" height="70vh" frameborder="0" style="border:0;height:80vh !important"></iframe>');
 
                 //// API key is needed
                 //$.get({
@@ -349,10 +349,5 @@
                 gritter("Error", "Error processing the request.");
             }
         });
-    }
-    function iframe_onload() {
-        setTimeout(function () {
-            alert($("div.address").innerHTML);
-        }, 2000);
     }
 </script>
