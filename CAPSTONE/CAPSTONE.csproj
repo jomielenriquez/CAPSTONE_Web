@@ -208,6 +208,8 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="img\favicon.ico" />
+    <Content Include="img\TMO_logo.jpg" />
     <Content Include="Scripts\advanced-datatable\css\demo_page.css" />
     <Content Include="Scripts\advanced-datatable\css\demo_table.css" />
     <Content Include="Scripts\advanced-datatable\css\demo_table_jui.css" />
