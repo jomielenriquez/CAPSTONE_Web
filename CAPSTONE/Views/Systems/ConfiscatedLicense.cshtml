@@ -234,10 +234,6 @@
         });
     });
 
-    function filterOnclick() {
-        updateGrid();
-    }
-
     function updateGrid() {
         $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
         document.getElementById("no-more-tables").innerHTML = `
@@ -611,6 +607,9 @@
         });
     }
 
+    function filterOnclick() {
+        updateGrid();
+    }
 
 </script>
 
