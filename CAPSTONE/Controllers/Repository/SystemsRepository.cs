@@ -528,6 +528,20 @@ namespace CAPSTONE.Controllers.Repository
             }
             return JsonConvert.SerializeObject(dt);
         }
+        public string proc_get_yearly_report()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection con = new SqlConnection(constr))
+            {
+                SqlCommand cmd = new SqlCommand("proc_get_yearly_report", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                con.Open();
+                da.Fill(dt);
+                con.Close();
+            }
+            return JsonConvert.SerializeObject(dt);
+        }
         public string proc_get_daily_report()
         {
             DataTable dt = new DataTable();

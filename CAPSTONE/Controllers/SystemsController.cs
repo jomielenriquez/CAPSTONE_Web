@@ -391,6 +391,11 @@ namespace CAPSTONE.Controllers
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_weekly_report();
         }
+        public string proc_get_yearly_report()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_yearly_report();
+        }
         public string proc_get_daily_report()
         {
             SystemsRepository systemsRepository = new SystemsRepository();
