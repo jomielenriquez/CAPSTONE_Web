@@ -9,18 +9,60 @@
     <div class="col-lg-12">
         <div class="content-panel">
             <h4><i class="fa fa-angle-right"></i> Total Number of Violators per Violations</h4>
+
+            <div id="div_filter" class="alert ">
+                @* FILTER TYPE *@
+                <div id="div_filtertype" style="margin:5px">
+                    <label> Filter Type: </label>
+                    <select class="form-control" name="filtertype" id="select_filtertype" style="width:200px" onchange="onfiltertype_change()">
+                        <option value=""> -- Select Type -- </option>
+                        <option value="dateRange">Date range</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                    </select>
+                </div>
+                @* DATE RANGE *@
+                <div id="div_dateRange" style="margin:5px; display:none" class="filters">
+                    <label> Date From: </label>
+                    <input type="date" id="input_daterangefrom" class="form-control" style="width:150px" />
+                    <label> Date To: </label>
+                    <input type="date" id="input_daterangeto" class="form-control" style="width:150px" />
+                </div>
+
+                @* WEEK *@
+                <div id="div_week" style="margin: 5px; display: none" class="filters">
+                    <label> Week: </label>
+                    <select class="form-control" name="week" id="select_week" style="width:220px">
+                        <option value=""> -- Select Week -- </option>
+                    </select>
+                </div>
+
+                @* MONTH *@
+
+                <div id="div_month" style="margin: 5px; display: none" class="filters">
+                    <label> Month: </label>
+                    <select class="form-control" name="month" id="select_month" style="width:220px">
+                        <option value=""> -- Select Month -- </option>
+                    </select>
+                </div>
+
+                @* YEAR *@
+
+                <div id="div_year" style="margin: 5px; display: none" class="filters">
+                    <label> Year: </label>
+                    <select class="form-control" name="year" id="select_year" style="width:220px">
+                        <option value=""> -- Select Year -- </option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-default" onclick="filterOnclick()">Filter</button>
+                </div>
+
+            </div>
+
             <section id="no-more-tables">
-                <table class="table table-bordered table-striped table-condensed cf" id="tbl_statistics">
-                    <thead class="cf">
-                        <tr>
-                            <th>Traffic Violations</th>
-                            <th>Fines of Violations</th>
-                            <th>Total Number of Violators per Violations</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
             </section>
         </div>
     </div>
@@ -31,12 +73,26 @@
     $('#tg-statics').addClass("active");
 
     $(document).ready(function () {
-        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+        
         updateGrid();
         //$("#myModal_reload").modal("hide"); // remove when API is working
     });
 
     function updateGrid() {
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+
+        document.getElementById("no-more-tables").innerHTML = `<table class="table table-bordered table-striped table-condensed cf" id="tbl_statistics" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                    <thead class="cf">
+                        <tr>
+                            <th>Traffic Violations</th>
+                            <th>Fines of Violations</th>
+                            <th>Total Number of Violators per Violations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>`;
+
         $.ajax({
             type: "POST",
             url: "/Systems/get_statistics",
@@ -44,8 +100,13 @@
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 data = someerm(data);
+                
+                console.log(data);
 
                 var Json_Data = JSON.parse(data);
+
+                console.log(Json_Data);
+
                 for (var i = 0; i < Json_Data.length; i++) {
                     var Row = `<tr><td class="Name" data-title="Name">` + Json_Data[i]["trafficviolation"] + `</td>
                             <td class="Address" data-title="Address">P `+ Json_Data[i]["finesofviolation"] + `.00</td>
@@ -53,8 +114,75 @@
                     $('#tbl_statistics tbody').append(Row);
 
                 }
-                //$("#tbl_statistics").DataTable();
+
+                $("tr.no-records-found").remove();
+
+                $("div.fixed-table-loading").css("display", "none");
+                $("div.fixed-table-toolbar div.search").css("display", "none");
+                $("div.fixed-table-toolbar div.export").css("z-index", "9");
+                $("ul.dropdown-menu").css("transform", "translateX(-110px)");
+
+                $("#tbl_statistics").DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        /*'print'*/
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [0, 1, 2]
+                            },
+                            customize: function (win) {
+                                $(win.document.body)
+                                    .css('font-size', '10pt')
+                                    .prepend(
+
+                                        `
+                                        <div style="display: block;">
+                                          <div style="display: inline-block; margin-top: 10px;">
+                                            <img
+                                              style="height: 50px; width: 50px;"
+                                              src="https://scontent.fmnl3-1.fna.fbcdn.net/v/t1.15752-9/322628956_573845621265241_3926649235592693608_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=aee45a&_nc_eui2=AeGadpblaAu9cjDOR3KjSACeztMYxnbdvSvO0xjGdt29K0u3thXs8z8Oq5Jp7uP-YJhiuvH-CTM_7WhY8g0lWlcf&_nc_ohc=UFgADUqW7CoAX8pf3_A&_nc_ht=scontent.fmnl3-1.fna&oh=03_AdTHx354b9EfcEMjPADqSmvTylkdWqHuJoWTEWpPDo-ICQ&oe=63ED6CC9"
+                                            />
+                                          </div>
+                                          <div style="display: inline-block; transform: translateY(12px);">
+                                            <span style="font-size: 38px; height: 50px;">
+                                              <b>Tanauan City Traffic Management</b>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        `
+                                    );
+
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
+                    ],
+                });
+
+
                 $("#myModal_reload").modal("hide");
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/Systems/getViolationAndApprehensions",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                console.log(data);
+
+                var Json_Data = JSON.parse(data);
+
+                console.log(Json_Data);
             },
             error: function (textStatus, errorThrown) {
                 // Success = false;//doesn't go here

@@ -293,6 +293,15 @@ namespace CAPSTONE.Controllers
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.get_violation();
         }
+        public string getViolationAndApprehensions()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            string str_violations = systemsRepository.get_violation();
+
+            string str_apprehensions = systemsRepository.getreport();
+
+            return "{\"violation\": " + str_violations +", \"apprehensions\": " + str_apprehensions + " }";
+        }
         public string insert_ticketcitation(
             int tid,
             string fname,
