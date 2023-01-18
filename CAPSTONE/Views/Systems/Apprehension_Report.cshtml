@@ -9,6 +9,59 @@
     <div class="col-lg-12">
         <div class="content-panel">
             <h4><i class="fa fa-angle-right"></i> Reports</h4>
+
+            <div id="div_filter" class="alert ">
+                @* FILTER TYPE *@
+                <div id="div_filtertype" style="margin:5px">
+                    <label> Filter Type: </label>
+                    <select class="form-control" name="filtertype" id="select_filtertype" style="width:200px" onchange="onfiltertype_change()">
+                        <option value=""> -- Select Type -- </option>
+                        <option value="dateRange">Date range</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                    </select>
+                </div>
+                @* DATE RANGE *@
+                <div id="div_dateRange" style="margin:5px; display:none" class="filters">
+                    <label> Date From: </label>
+                    <input type="date" id="input_daterangefrom" class="form-control" style="width:150px" />
+                    <label> Date To: </label>
+                    <input type="date" id="input_daterangeto" class="form-control" style="width:150px" />
+                </div>
+
+                @* WEEK *@
+                <div id="div_week" style="margin: 5px; display: none" class="filters">
+                    <label> Week: </label>
+                    <select class="form-control" name="week" id="select_week" style="width:220px">
+                        <option value=""> -- Select Week -- </option>
+                    </select>
+                </div>
+
+                @* MONTH *@
+
+                <div id="div_month" style="margin: 5px; display: none" class="filters">
+                    <label> Month: </label>
+                    <select class="form-control" name="month" id="select_month" style="width:220px">
+                        <option value=""> -- Select Month -- </option>
+                    </select>
+                </div>
+
+                @* YEAR *@
+
+                <div id="div_year" style="margin: 5px; display: none" class="filters">
+                    <label> Year: </label>
+                    <select class="form-control" name="year" id="select_year" style="width:220px">
+                        <option value=""> -- Select Year -- </option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-default" onclick="filterOnclick()">Filter</button>
+                </div>
+
+            </div>
+
             <div id="toolbar" style="display:none">
                 <select class="form-control">
                     <option value="">Export Basic</option>
@@ -17,20 +70,7 @@
                 </select>
             </div>
             <section id="no-more-tables">
-                <table class="table table-bordered table-striped table-condensed cf" id="tbl_apprehention" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar" >
-                    <thead class="cf">
-                        <tr>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>License No.</th>
-                            <th>Vehicle Type</th>
-                            <th>Place of Violation</th>
-                            <th>Violation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+                
             </section>
         </div>
     </div>
@@ -48,10 +88,29 @@
     $(document).ready(function () {
 
         updateGrid();
+        monthlydropdown();
+        weeklydropdown();
+        yearlydropdown();
 
     });
     function updateGrid() {
         $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+
+        document.getElementById("no-more-tables").innerHTML = `<table class="table table-bordered table-striped table-condensed cf" id="tbl_apprehention" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                    <thead class="cf">
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>License No.</th>
+                            <th>Vehicle Type</th>
+                            <th>Place of Violation</th>
+                            <th>Violation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>`;
+
         $.ajax({
             type: "POST",
             url: "/Systems/getreport",
@@ -61,6 +120,54 @@
                 data = someerm(data);
                 //gritter("Success", "see console log.");
                 var Json_Data = JSON.parse(data);
+
+                if ($("#select_filtertype").val() != "") {
+                    //filter by date range
+                    if ($("#select_filtertype").val() == "dateRange") {
+                        var startDate = new Date($("#input_daterangefrom").val());
+                        var endDate = new Date($("#input_daterangeto").val());
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.dateofapprehension);
+                            return (date >= startDate && date <= endDate);
+                        });
+
+                    }
+
+                    //filter by week
+                    if ($("#select_filtertype").val() == "week") {
+                        const week = $("#select_week").val().split(' - ');
+                        var startDate = new Date(week[0]);
+                        var endDate = new Date(week[1]);
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.dateofapprehension);
+                            return (date >= startDate && date <= endDate);
+                        });
+                    }
+
+                    //filter by month
+                    if ($("#select_filtertype").val() == "month") {
+                        var selectedMonth = new Date($("#select_month").val()).getMonth();
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.dateofapprehension).getMonth();
+                            return (date == selectedMonth);
+                        });
+                    }
+
+                    //filter by year
+                    if ($("#select_filtertype").val() == "year") {
+                        var selectedYear = new Date($("#select_year").val()).getFullYear();
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.dateofapprehension).getFullYear();
+                            return (date == selectedYear);
+                        });
+                    }
+
+                }
+
                 for (var i = 0; i < Json_Data.length; i++) {
                     var Row = `<tr id='` + Json_Data[i]["tid"] + `'><td class="Name" data-title="Name">` + Json_Data[i]["fname"] + `</td>
                             <td class="Address" data-title="Address">`+ Json_Data[i]["address"] + `</td>
@@ -82,7 +189,38 @@
                 $('#tbl_apprehention').DataTable({
                     dom: 'Bfrtip',
                     buttons: [
-                        'print'
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4, 5]
+                            },
+                            customize: function (win) {
+                                $(win.document.body)
+                                    .css('font-size', '10pt')
+                                    .prepend(
+
+                                        `
+                                        <div style="display: block;">
+                                          <div style="display: inline-block; margin-top: 10px;">
+                                            <img
+                                              style="height: 50px; width: 50px;"
+                                              src="https://scontent.fmnl3-1.fna.fbcdn.net/v/t1.15752-9/322628956_573845621265241_3926649235592693608_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=aee45a&_nc_eui2=AeGadpblaAu9cjDOR3KjSACeztMYxnbdvSvO0xjGdt29K0u3thXs8z8Oq5Jp7uP-YJhiuvH-CTM_7WhY8g0lWlcf&_nc_ohc=UFgADUqW7CoAX8pf3_A&_nc_ht=scontent.fmnl3-1.fna&oh=03_AdTHx354b9EfcEMjPADqSmvTylkdWqHuJoWTEWpPDo-ICQ&oe=63ED6CC9"
+                                            />
+                                          </div>
+                                          <div style="display: inline-block; transform: translateY(12px);">
+                                            <span style="font-size: 38px; height: 50px;">
+                                              <b>Tanauan City Traffic Management</b>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        `
+                                    );
+
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
                     ]
                 });
                 //===================================
@@ -191,5 +329,92 @@
                 gritter("Error", "There was a problem updating the data.");
             }
         });
+    }
+    function onfiltertype_change() {
+        $("#div_filter div.filters").css("display", "none");
+        $("#div_filter div#div_" + $("#select_filtertype").val()).css("display", "");
+        //alert("#div_filter div#" + $("#select_filtertype").val())
+        //alert($("#select_filtertype").val())
+    }
+    function monthlydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_monthly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["month-words"];
+                    var optionValue = Json_Data[i]["year-month"];
+                    $('#select_month').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+
+    function weeklydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_weekly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["Week"];
+                    var optionValue = Json_Data[i]["Week"];
+                    $('#select_week').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+
+    function yearlydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_yearly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["year"];
+                    var optionValue = Json_Data[i]["year"];
+                    $('#select_year').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+    function filterOnclick() {
+        updateGrid();
     }
 </script>
