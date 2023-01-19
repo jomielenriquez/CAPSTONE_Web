@@ -186,7 +186,7 @@
             licneseno = $("#input_licenseno").val(),
             birthdate = $("#input_birthdate").val(),
             dateofapprehension = $("#input_dateofapprehension").val(),
-            placeofviolation = $("#select_PlaceViolation option:selected").text(),//$("#input_placeofviolation").val() ,
+            placeofviolation = '',//$("#select_PlaceViolation option:selected").text(),
             violationid = $("#select_Violation").val(),
             vehicletype = $("#input_vehicletype").val(),
             classification = $('input[name="radio_classification"]:checked').val(),
@@ -229,14 +229,11 @@
             $("#input_dateofapprehension").css("border-color", "red");
             counterror++;
         }
-        //if ($("#input_placeofviolation").val() == "") {
-        //    $("#input_placeofviolation").css("border-color", "red");
+        // WEB#57 // remove all place of violation
+        //if ($("#select_PlaceViolation option:selected").text() == "") {
+        //    $("#select_PlaceViolation").css("border-color", "red");
         //    counterror++;
         //}
-        if ($("#select_PlaceViolation option:selected").text() == "") {
-            $("#select_PlaceViolation").css("border-color", "red");
-            counterror++;
-        }
         if ($("#select_Violation").val() == "Please select") {
             $("#select_Violation").css("border-color", "red");
             counterror++;
