@@ -103,7 +103,7 @@
                             <th>Address</th>
                             <th>License No.</th>
                             <th>Vehicle Type</th>
-                            <th>Place of Violation</th>
+                            <!--<th>Place of Violation</th>-->
                             <th>Violation</th>
                         </tr>
                     </thead>
@@ -177,7 +177,7 @@
                             <td class="Address" data-title="Address">`+ Json_Data[i]["address"] + `</td>
                             <td class="License" data-title="License">`+ Json_Data[i]["licenseno"] + `</td>
                             <td class="Vehicle" data-title="Vehicle">`+ Json_Data[i]["vehicletype"] + `</td>
-                            <td class="Place" data-title="Place">`+ Json_Data[i]["placeofviolation"] + `</td>
+                            <!--<td class="Place" data-title="Place">`+ Json_Data[i]["placeofviolation"] + `</td>-->
                             <td>`+ Json_Data[i]["vdesc"] + `</td>`;
                     $('#tbl_apprehention tbody').append(Row);
                 }
