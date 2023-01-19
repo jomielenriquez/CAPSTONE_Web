@@ -1,0 +1,469 @@
+﻿
+@{
+    ViewBag.Title = "PDA Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt">
+    <div class="col-lg-12">
+        <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> PDA Logs</h4>
+
+            <div id="div_filter" class="alert ">
+                @* FILTER TYPE *@
+                <div id="div_filtertype" style="margin:5px">
+                    <label> PDA Number:: </label>
+                    <select class="form-control" name="filtertype" id="select_filterpda" style="width:200px" onchange="">
+                        <option value=""> -- Select PDA Number -- </option>
+                    </select>
+                </div>
+
+                <div id="div_filtertype" style="margin:5px">
+                    <label> Filter Type: </label>
+                    <select class="form-control" name="filtertype" id="select_filtertype" style="width:200px" onchange="onfiltertype_change()">
+                        <option value=""> -- Select Type -- </option>
+                        <option value="dateRange">Date range</option>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                    </select>
+                </div>
+                @* DATE RANGE *@
+                <div id="div_dateRange" style="margin:5px; display:none" class="filters">
+                    <label> Date From: </label>
+                    <input type="date" id="input_daterangefrom" class="form-control" style="width:150px" />
+                    <label> Date To: </label>
+                    <input type="date" id="input_daterangeto" class="form-control" style="width:150px" />
+                </div>
+
+                @* WEEK *@
+                <div id="div_week" style="margin: 5px; display: none" class="filters">
+                    <label> Week: </label>
+                    <select class="form-control" name="week" id="select_week" style="width:220px">
+                        <option value=""> -- Select Week -- </option>
+                    </select>
+                </div>
+
+                @* MONTH *@
+
+                <div id="div_month" style="margin: 5px; display: none" class="filters">
+                    <label> Month: </label>
+                    <select class="form-control" name="month" id="select_month" style="width:220px">
+                        <option value=""> -- Select Month -- </option>
+                    </select>
+                </div>
+
+                @* YEAR *@
+
+                <div id="div_year" style="margin: 5px; display: none" class="filters">
+                    <label> Year: </label>
+                    <select class="form-control" name="year" id="select_year" style="width:220px">
+                        <option value=""> -- Select Year -- </option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" class="btn btn-default" onclick="filterOnclick()">Filter</button>
+                </div>
+
+            </div>
+
+            <div id="toolbar" style="display:none">
+                <select class="form-control">
+                    <option value="">Export Basic</option>
+                    <option value="all">Export All</option>
+                    <option value="selected">Export Selected</option>
+                </select>
+            </div>
+            <section id="no-more-tables">
+            </section>
+        </div>
+    </div>
+</div>
+
+<div style="text-align:center">
+
+</div>
+
+
+<script type="text/javascript">
+    $('li a').removeClass("active");
+    $('#tg-pdalog').addClass("active");
+
+    $(document).ready(function () {
+
+        updateGrid();
+
+        monthlydropdown();
+        weeklydropdown();
+        yearlydropdown();
+        proc_get_allpda();
+
+    });
+    function updateGrid() {
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+
+        document.getElementById("no-more-tables").innerHTML = `<table class="table table-bordered table-striped table-condensed cf" id="tbl_pdalog" data-toggle="table" data-search="true" data-filter-control="true" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                    <thead class="cf">
+                        <tr>
+                            <th>PDA No.</th>
+                            <th>Full Name</th>
+                            <th>Activity</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>`;
+
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_pdalog",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                //gritter("Success", "see console log.");
+                var Json_Data = JSON.parse(data);
+
+                var AdditionalForTitle = "";
+
+                console.log(Json_Data);
+
+                if ($("#select_filterpda").val() != "") {
+                    Json_Data = Json_Data.filter(a => {
+                        //var date = new Date(a.CreatedDate);
+                        return ($("#select_filterpda").val() == a.PDAnum);
+                    });
+
+                    AdditionalForTitle = " of " + $("#select_filterpda").val();
+
+                }
+                console.log(Json_Data);
+
+                if ($("#select_filtertype").val() != "") {
+                    //filter by date range
+                    if ($("#select_filtertype").val() == "dateRange") {
+                        var startDate = new Date($("#input_daterangefrom").val());
+                        var endDate = new Date($("#input_daterangeto").val());
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.CreatedDate);
+                            return (date >= startDate && date <= endDate);
+                        });
+
+                        AdditionalForTitle += " from " + $("#input_daterangefrom").val() + " to " + $("#input_daterangeto").val();
+
+                    }
+
+                    //filter by week
+                    if ($("#select_filtertype").val() == "week") {
+                        const week = $("#select_week").val().split(' - ');
+                        var startDate = new Date(week[0]);
+                        var endDate = new Date(week[1]);
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.CreatedDate);
+                            return (date >= startDate && date <= endDate);
+                        });
+
+                        AdditionalForTitle += " for the week " + $("#select_week").val();
+                    }
+
+                    //filter by month
+                    if ($("#select_filtertype").val() == "month") {
+                        var selectedMonth = new Date($("#select_month").val()).getMonth();
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.CreatedDate).getMonth();
+                            return (date == selectedMonth);
+                        });
+
+                        AdditionalForTitle += " for the month " + $("#select_month").val();
+                    }
+
+                    //filter by year
+                    if ($("#select_filtertype").val() == "year") {
+                        var selectedYear = new Date($("#select_year").val()).getFullYear();
+
+                        Json_Data = Json_Data.filter(a => {
+                            var date = new Date(a.CreatedDate).getFullYear();
+                            return (date == selectedYear);
+                        });
+
+                        AdditionalForTitle += " for the year " + $("#select_year").val();
+                    }
+
+                }
+                console.log("after");
+                console.log(Json_Data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var Row = `<tr id='` + Json_Data[i]["tid"] + `'>
+                            <td class="PDAnum" data-title="PDAnum">` + Json_Data[i]["PDAnum"] + `</td>
+                            <td class="FullName" data-title="FullName">` + Json_Data[i]["fullname"] + `</td>
+                            <td class="Activity" data-title="Activity">`+ Json_Data[i]["activity"] + `</td>
+                            <td class="CreatedDate" data-title="CreatedDate">`+ new Date(Json_Data[i]["CreatedDate"]) + `</td>`;
+                    $('#tbl_pdalog tbody').append(Row);
+                }
+                //if (Json_Data.length == 0) $('#tbl_pdalog tbody').append('<tr><td colspan="7" style="text-align:center">No Record</td></tr>');
+                $("tr.no-records-found").remove();
+                $("div.fixed-table-loading").css("display", "none");
+                $("div.fixed-table-toolbar div.search").css("display", "none");
+                //$("div.fixed-table-toolbar div.export").css("transform", "translateY(-50px)")
+                $("div.fixed-table-toolbar div.export").css("z-index", "9");
+                $("ul.dropdown-menu").css("transform", "translateX(-110px)");
+
+                $('#tbl_pdalog').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [0, 1, 2]
+                            },
+                            customize: function (win) {
+                                $(win.document.body)
+                                    .css('font-size', '10pt')
+                                    .prepend(
+
+                                        `
+                                        <div style="width:100%; text-align: center; vertical-align: middle; display: block;">
+                                          <div style="display: inline-block; margin-top: 10px;">
+                                            <img
+                                              style="height: 50px; width: 50px;"
+                                              src="https://scontent.fmnl3-1.fna.fbcdn.net/v/t1.15752-9/322628956_573845621265241_3926649235592693608_n.jpg?stp=dst-jpg_p403x403&_nc_cat=107&ccb=1-7&_nc_sid=aee45a&_nc_eui2=AeGadpblaAu9cjDOR3KjSACeztMYxnbdvSvO0xjGdt29K0u3thXs8z8Oq5Jp7uP-YJhiuvH-CTM_7WhY8g0lWlcf&_nc_ohc=UFgADUqW7CoAX8pf3_A&_nc_ht=scontent.fmnl3-1.fna&oh=03_AdTHx354b9EfcEMjPADqSmvTylkdWqHuJoWTEWpPDo-ICQ&oe=63ED6CC9"
+                                            />
+                                          </div>
+                                          <div style="display: inline-block; transform: translateY(12px);">
+                                            <span style="font-size: 38px; height: 50px;">
+                                              <b>Tanauan City Traffic Management</b>
+                                            </span>
+                                          </div>
+                                        </div>
+                                        <div style="width:100%; text-align: center; vertical-align: middle; font-size: 20px; font-style: italic;"> PDA Logs Report`+ AdditionalForTitle + ` </div>
+                                        `
+                                    );
+
+                                $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                            }
+                        }
+                    ]
+                });
+                //===================================
+                var $table = $("#tbl_pdalog"); // "table" accordingly
+
+                $(function () {
+                    $("#toolbar")
+                        //.find("select")
+                        .change(function () {
+                            $table.bootstrapTable("refreshOptions", {
+                                exportDataType: $(this).val()
+                            });
+                        });
+                });
+
+                //===================================
+                $("#myModal_reload").modal("hide");
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+    function EditBtnOnclick(btn) {
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+
+        var target_row = $(btn).closest('tr');
+        var rowid = target_row.attr('id'),
+            rowname = target_row.find('td.Name').text(),
+            rowaddress = target_row.find('td.Address').text(),
+            rowlicense = target_row.find('td.License').text(),
+            rowvehicle = target_row.find('td.Vehicle').text(),
+            rowplace = target_row.find('td.Place').text(),
+            rowviolation = target_row.find('td.Violation').text();
+
+        $("#inp_name").val(rowname);
+        $("#inp_address").val(rowaddress);
+        $("#inp_LicenseNo").val(rowlicense);
+        $("#inp_VehicleType").val(rowvehicle);
+        $("#inp_PlaceOfViolation").val(rowplace);
+        $("#input_rowid").val(rowid);
+
+        // get dropdown values
+        $.ajax({
+            type: "POST",
+            url: "/Systems/get_violation",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                $("#select_Violation").html('<option selected="selected">Please select</option>');
+                var Json_Data = JSON.parse(data);
+                console.log(Json_Data);
+                for (var i = 0; i < Json_Data.length; i++) {
+                    $("#select_Violation").append("<option value='" + Json_Data[i]["vid"] + "'>" + Json_Data[i]["vdesc"] + "</option>")
+                }
+
+                $("#select_Violation").val(rowviolation).change();
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+        //$("#select_Violation option[value=" + rowviolation + "]").attr('selected', 'selected');
+        $("#myModal_reload").modal("hide");
+        $("#myModal_edit").modal("show");
+    }
+    function btn_saveChanges() {
+        $("#myModal_edit").modal("hide");
+        $("#myModal_reload").modal({ backdrop: 'static', keyboard: false }, 'show');
+        $.ajax({
+            type: "POST",
+            url: "/Systems/insert_ticketcitation",
+            dataType: "text",
+            data: JSON.stringify({
+                "tid": $("#input_rowid").val(),
+                "fname": $("#inp_name").val(),
+                "address": $("#inp_address").val(),
+                "licenseno": $("#inp_LicenseNo").val(),
+                "vehicletype": $("#inp_VehicleType").val(),
+                "placeofviolation": $("#inp_PlaceOfViolation").val(),
+                "violationid": $("#select_Violation").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                if (data == "ERROR") gritter("Error", "There was a problem updating the data.");
+                else {
+                    $('#tbl_pdalog tbody').html("");
+
+                    updateGrid();
+                    gritter("Success", "Successfully updated.");
+                }
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "There was a problem updating the data.");
+            }
+        });
+    }
+    function onfiltertype_change() {
+        $("#div_filter div.filters").css("display", "none");
+        $("#div_filter div#div_" + $("#select_filtertype").val()).css("display", "");
+        //alert("#div_filter div#" + $("#select_filtertype").val())
+        //alert($("#select_filtertype").val())
+    }
+    function monthlydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_monthly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["month-words"];
+                    var optionValue = Json_Data[i]["year-month"];
+                    $('#select_month').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+
+    function weeklydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_weekly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["Week"];
+                    var optionValue = Json_Data[i]["Week"];
+                    $('#select_week').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+
+    function yearlydropdown() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_yearly_report",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["year"];
+                    var optionValue = Json_Data[i]["year"];
+                    $('#select_year').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+    function proc_get_allpda() {
+        $.ajax({
+            type: "POST",
+            url: "/Systems/proc_get_allpda",
+            dataType: "text",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = someerm(data);
+                var Json_Data = JSON.parse(data);
+
+                for (var i = 0; i < Json_Data.length; i++) {
+                    var optionText = Json_Data[i]["PDAnum"];
+                    var optionValue = Json_Data[i]["PDAnum"];
+                    $('#select_filterpda').append(`<option value="${optionValue}">
+                                       ${optionText}
+                                  </option>`);
+                }
+
+            },
+            error: function (textStatus, errorThrown) {
+                // Success = false;//doesn't go here
+                gritter("Error", "Error processing the request.");
+            }
+        });
+    }
+    function filterOnclick() {
+        updateGrid();
+    }
+</script>
