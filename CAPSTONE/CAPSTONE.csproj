@@ -404,6 +404,7 @@
     <Content Include="Views\Systems\EnforcerAccounts.cshtml" />
     <Content Include="Views\Public\Index.cshtml" />
     <Content Include="Views\Systems\PDALocation.cshtml" />
+    <Content Include="Views\Systems\PDALogs.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

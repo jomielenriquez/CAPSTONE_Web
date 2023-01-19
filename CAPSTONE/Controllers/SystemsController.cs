@@ -172,6 +172,21 @@ namespace CAPSTONE.Controllers
 
             return View(userControl);
         }
+        public ActionResult PDALogs(string id)
+        {
+            UserControl userControl = new UserControl();
+
+            SystemsRepository systemsRepository = new SystemsRepository();
+
+
+            userControl.currentuser = systemsRepository.GetCurrentUser(id);
+
+            if (userControl.currentuser.acnttype == "" || userControl.currentuser.acnttype == null) return RedirectToAction("Index", "Login");
+
+            userControl.menulist = systemsRepository.GetMenu(userControl.currentuser.acnttype);
+
+            return View(userControl);
+        }
         public ActionResult Dashboard(string id)
         {
             UserControl userControl = new UserControl();
@@ -341,6 +356,16 @@ namespace CAPSTONE.Controllers
         {
             SystemsRepository systemsRepository = new SystemsRepository();
             return systemsRepository.proc_get_statistics();
+        }
+        public string proc_get_pdalog()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_pdalog();
+        }
+        public string proc_get_allpda()
+        {
+            SystemsRepository systemsRepository = new SystemsRepository();
+            return systemsRepository.proc_get_allpda();
         }
         public string prop_get_confiscated_license()
         {
